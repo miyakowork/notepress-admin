@@ -1,0 +1,270 @@
+<style>
+    #NP_dict .layui-input-block {
+        margin-left: 0 !important;
+    }
+
+    #NP_dict .layui-btn.layui-btn-primary.layui-btn-radius {
+        margin-bottom: 10px;
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    #NP_dict .layui-elem-field legend {
+        font-size: 18px;
+    }
+</style>
+<title><i class="fa fa-language"></i> 字典管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>内容管理</cite></a>
+        <a><cite>字典管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_dict">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md4">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend><i class="fa fa-file-word-o"></i> <b>敏感字词管理</b></legend>
+            </fieldset>
+            <blockquote class="layui-elem-quote" style="background-color: #ffffff;">此功能将用于评论和留言的关键词过滤</blockquote>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 0;">
+                    <input type="text" name="keyword" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="layui-btn layui-btn-primary" id="keyword-search"><i class="fa fa-search"></i> 搜索
+                    </button>
+                    <button class="layui-btn" id="keyword-add"><i class="fa fa-plus"></i> 添加</button>
+                </div>
+            </div>
+            <hr>
+            <div class="keyword" id="keywordHtml">
+                <script type="text/html" template lay-url="/admin/dictionary/SENSITIVE_WORD">
+                    {{# if(d.code === 200 && d.data.length >0){ }}
+                    {{#  layui.each(d.data, function(index, item){ }}
+                    <button class="layui-btn layui-btn-primary layui-btn-radius">
+                        <i class="fa fa-file-word-o"></i>
+                        <span>{{item.dictValue}}</span><span class="layui-badge layui-bg-gray delete" data-kid="{{item.id}}">×</span></button>
+                    {{#  }); }}
+                    {{# } else{ }}
+                    <h2>暂无数据</h2>
+                    {{# } }}
+                </script>
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend><i class="fa fa-tags"></i> <b>标签管理</b></legend>
+            </fieldset>
+            <blockquote class="layui-elem-quote" style="background-color: #ffffff;">添加内容时添加的一些标签将会在此展示</blockquote>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 0;">
+                    <input type="text" name="tag" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="layui-btn layui-btn-primary" id="tag-search"><i class="fa fa-search"></i> 搜索
+                    </button>
+                    <button class="layui-btn" id="tag-add"><i class="fa fa-plus"></i> 添加</button>
+                </div>
+            </div>
+            <hr>
+            <div class="keyword" id="tagHtml">
+                <script type="text/html" template lay-url="/admin/dictionary/TAG">
+                    {{# if(d.code === 200 && d.data.length >0){ }}
+                    {{#  layui.each(d.data, function(index, item){ }}
+                    <button class="layui-btn layui-btn-primary layui-btn-radius">
+                        <i class="fa fa-tags"></i>
+                        <span>{{item.dictValue}}</span><span class="layui-badge layui-bg-gray delete" data-kid="{{item.id}}">×</span></button>
+                    {{#  }); }}
+                    {{# } else{ }}
+                    <h2>暂无数据</h2>
+                    {{# } }}
+                </script>
+            </div>
+        </div>
+
+
+        <div class="layui-col-md4">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend><i class="fa fa-link"></i> <b>友情链接管理</b></legend>
+            </fieldset>
+            <blockquote class="layui-elem-quote" style="background-color: #ffffff;">格式：网站名称,http://www.xxx.com</blockquote>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 0;">
+                    <input type="text" name="link" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="layui-btn layui-btn-primary" id="link-search"><i class="fa fa-search"></i> 搜索
+                    </button>
+                    <button class="layui-btn" id="link-add"><i class="fa fa-plus"></i> 添加</button>
+                </div>
+            </div>
+            <hr>
+            <div class="keyword" id="linkHtml">
+                <script type="text/html" template lay-url="/admin/dictionary/LINK">
+                    {{# if(d.code === 200 && d.data.length >0){ }}
+                    {{#  layui.each(d.data, function(index, item){ }}
+                    <button class="layui-btn layui-btn-primary layui-btn-radius">
+                        <i class="fa fa-link"></i>
+                        <span>{{item.dictValue}}</span><span class="layui-badge layui-bg-gray delete" data-kid="{{item.id}}">×</span></button>
+                    {{#  }); }}
+                    {{# } else{ }}
+                    <h2>暂无数据</h2>
+                    {{# } }}
+                </script>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script type="text/html" id="commonHtml">
+    {{# if(d.code === 200 && d.data.length >0){ }}
+    {{#  layui.each(d.data, function(index, item){ }}
+    <button class="layui-btn layui-btn-primary layui-btn-radius">
+        <i class="fa {{d.data.icon}}"></i>
+        <span>{{item.dictValue}}</span><span class="layui-badge layui-bg-gray delete" data-kid="{{item.id}}">×</span></button>
+    {{#  }); }}
+    {{# } else{ }}
+    <h2>暂无数据</h2>
+    {{# } }}
+</script>
+
+<script>
+
+    layui.use(["admin", 'laytpl'], function () {
+        var $ = layui.$,
+            laytpl = layui.laytpl,
+            admin = layui.admin;
+
+        $("#keyword-search").click(function () {
+            var kw = $("input[name=keyword]").val();
+            admin.req({
+                url: NP_Config.domain + '/admin/dictionary/SENSITIVE_WORD'
+                , data: {search: kw}
+                , done: function (resp) {
+                    var getTpl = document.getElementById('commonHtml').innerHTML
+                        , view = document.getElementById('keywordHtml');
+                    resp.data.icon = "fa-file-word-o";
+                    laytpl(getTpl).render(resp, function (html) {
+                        view.innerHTML = html;
+                    });
+                }
+            })
+        });
+
+        $("#tag-search").click(function () {
+            var kw = $("input[name=tag]").val();
+            admin.req({
+                url: NP_Config.domain + '/admin/dictionary/TAG'
+                , data: {search: kw}
+                , done: function (resp) {
+                    var getTpl = document.getElementById('commonHtml').innerHTML
+                        , view = document.getElementById('tagHtml');
+                    resp.data.icon = "fa-tags";
+                    laytpl(getTpl).render(resp, function (html) {
+                        view.innerHTML = html;
+                    });
+                }
+            })
+        });
+
+        $("#link-search").click(function () {
+            var kw = $("input[name=link]").val();
+            admin.req({
+                url: NP_Config.domain + '/admin/dictionary/LINK'
+                , data: {search: kw}
+                , done: function (resp) {
+                    var getTpl = document.getElementById('commonHtml').innerHTML
+                        , view = document.getElementById('linkHtml');
+                    resp.data.icon = "fa-link";
+                    laytpl(getTpl).render(resp, function (html) {
+                        view.innerHTML = html;
+                    });
+                }
+            })
+        });
+
+        $("#keyword-add").click(function () {
+            var addKeyword = $("input[name=keyword]").val();
+            if (addKeyword === '') {
+                layer.msg("关键字称不能为空！");
+            } else {
+                admin.req({
+                    type: "post",
+                    url: NP_Config.domain + "/admin/dictionary/add",
+                    data: {
+                        dictLabel: '敏感字词'
+                        , dictionaryType: 'SENSITIVE_WORD'
+                        , dictValue: addKeyword
+                    },
+                    done: function (resp) {
+                        NotePress.showMsgRefresh(resp);
+                    }
+                })
+            }
+        });
+
+        $("#tag-add").click(function () {
+            var addTag = $("input[name=tag]").val();
+            if (addTag === '') {
+                layer.msg("tag称不能为空！");
+            } else {
+                admin.req({
+                    type: "post",
+                    url: NP_Config.domain + "/admin/dictionary/add",
+                    data: {
+                        dictLabel: '标签'
+                        , dictionaryType: 'TAG'
+                        , dictValue: addTag
+                    },
+                    done: function (resp) {
+                        NotePress.showMsgRefresh(resp);
+                    }
+                })
+            }
+        });
+        $("#link-add").click(function () {
+            var addLink = $("input[name=link]").val();
+            debugger
+            if (addLink === '' || addLink.split(",").length !== 2) {
+                layer.msg("网站名称和链接称不能为空！");
+            } else {
+                admin.req({
+                    type: "post",
+                    url: NP_Config.domain + "/admin/dictionary/add",
+                    data: {
+                        dictLabel: '友情链接'
+                        , dictionaryType: 'LINK'
+                        , dictValue: addLink
+                    },
+                    done: function (resp) {
+                        NotePress.showMsgRefresh(resp);
+                    }
+                })
+            }
+        });
+
+
+        $("#NP_dict").on("click", "div.keyword>button>span.delete", function () {
+            var tbtn = $(this).parent();
+            var kid = $(this).attr("data-kid");
+            admin.req({
+                type: "post",
+                url: NP_Config.domain + "/admin/dictionary/delete",
+                data: {
+                    id: kid
+                },
+                done: function (resp) {
+                    layer.msg(resp.message);
+                    tbtn.remove();
+                }
+            })
+        });
+
+    });
+</script>

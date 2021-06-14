@@ -1,0 +1,302 @@
+<title><i class="fa fa-cloud-download"></i> 资源管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>内容管理</cite></a>
+        <a><cite>资源管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_res">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-res-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">文件名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="resHash" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-category" lay-submit lay-filter="LAY-res-front-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-res" data-type="add"><i class="fa fa-plus-square-o"></i> 新增（七牛云）</button>
+                <button class="layui-btn layuiadmin-btn-res" data-type="add2"><i class="fa fa-plus-square-o"></i> 新增（网盘/第三方URL）</button>
+                <button class="layui-btn layuiadmin-btn-res layui-bg-red" data-type="delete"><i class="fa fa-times"></i> 删除</button>
+            </div>
+
+            <table id="LAY-res-manage" lay-filter="LAY-res-manage"></table>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['table', 'form', 'admin'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , form = layui.form;
+
+        form.render(null, 'layadmin-res-formlist');
+
+        //分类管理
+        var resTable = table.render({
+            elem: '#LAY-res-manage'
+            , url: NP_Config.domain + '/admin/res'
+            , cols: [[
+                {type: 'radio', fixed: 'left'}
+                , {
+                    field: 'id', width: 80, title: '序号', type: "numbers", templet: function (d) {
+                        return d.LAY_TABLE_INDEX + 1;
+                    }
+                }
+                , {
+                    title: '分类', width: 180, templet: function (d) {
+                        return "<span class='layui-elip'>" + d.cateNames.join(",") + "</span>"
+                    }
+                }
+                , {
+                    field: 'resHash', minWidth: 200, title: '文件名称', sort: true, edit: 'text', templet: function (d) {
+                        return "<a href='" + d.resUrl + "' target='_blank' class='layui-elip' style='color: #1E9FFF;'>" + (d.remark || d.resHash) + "</a>";
+                    }
+                }
+                , {
+                    field: 'resFsizeBytes', title: '文件大小', width: 200, sort: true, templet: function (d) {
+                        var s = d.resFsizeBytes / 1024 / 1024;
+                        if (s < 0) {
+                            return '-';
+                        } else if (s < 1) {
+                            return (d.resFsizeBytes / 1024).toFixed(2) + "KB"
+                        } else if (s < 1024 * 1000) {
+                            return s.toFixed(2) + "MB";
+                        } else {
+                            return (s / 1024).toFixed(2) + "GB";
+                        }
+                    }
+                }
+                , {field: "coin", width: 80, title: "硬币", edit: 'text', sort: true}
+                , {
+                    field: "authCode", width: 120, title: "授权码", edit: 'text', templet: function (d) {
+                        return d.authCode || '-';
+                    }
+                }
+                , {field: "gmtCreate", width: 180, title: "上传时间", sort: true}
+            ]]
+            , initSort: {
+                field: 'gmtCreate'
+                , type: 'desc'
+            }
+            , where: {
+                extra: {
+                    resHash: $("input[name=resHash]").val()
+                }
+            }
+            , text: {
+                none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+            }
+        });
+
+        //监听单元格编辑
+        table.on('edit(LAY-res-manage)', function (obj) {
+            var data = obj.data;
+            admin.req({
+                url: NP_Config.domain + "/admin/res/updateFileProp",
+                type: "post",
+                data: {
+                    id: data.id,
+                    remark: obj.field === "resHash" ? obj.value : "",
+                    coin: obj.field === "coin" ? obj.value : "",
+                    authCode: obj.field === "authCode" ? obj.value : ""
+                },
+                done: function (success) {
+                    layer.msg(success.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 666);
+                }
+            })
+        });
+
+        //排序
+        table.on('sort(LAY-res-manage)', function (obj) {
+            resTable.reload({
+                initSort: obj
+                , where: {
+                    sort: obj.field
+                    , order: obj.type
+                }
+            });
+        });
+
+        //监听搜索
+        form.on('submit(LAY-res-front-search)', function (data) {
+            table.reload('LAY-res-manage', {
+                where: {
+                    extra: {
+                        resHash: data.field.resHash
+                    }
+                }
+            });
+        });
+
+        //事件
+        var active = {
+
+            add: function () {
+
+                admin.popup({
+                    title: '上传资源文件（目前仅支持七牛云，请确认您七牛云的设置）'
+                    , shadeClose: false
+                    , offset: '180px'
+                    , area: ['750px', '500px']
+                    , id: 'LAY-popup-res-add'
+                    , success: function (layero, index) {
+                        var that = this;
+                        admin.req({
+                            url: NP_Config.domain + "/admin/rescate/list"
+                            , data: {xmSelect: 1}
+                            , done: function (resp1) {
+                                view(that.id).render('contents/dialog/resform', {_type: 'add', _list: resp1.data}).done(function () {
+                                    $.getScript('/notepress-admin/static/plugins/xm-select/xm-select.min.js').done(function () {
+                                        form.render(null, 'layuiadmin-form-res');
+                                        window._rescateBlock = xmSelect.render({
+                                            el: '#rescateBlock',
+                                            tips: '请选择资源所属分类',
+                                            language: 'zn',
+                                            autoRow: true,
+                                            data: resp1.data,
+                                            toolbar: {
+                                                show: true
+                                            },
+                                            filterable: true,
+                                            paging: true,
+                                            pageSize: 5,
+                                            on: function (data) {
+                                                var srcIds = [];
+                                                for (var i = 0; i < data.arr.length; i++) {
+                                                    srcIds.push(data.arr[i].value);
+                                                }
+                                                window._selectedResCateIds = srcIds.join(",");
+                                            }
+                                        });
+                                    });
+                                });
+                            }
+                        });
+
+                    }
+                });
+
+            }
+
+            , add2: function () {
+
+                admin.popup({
+                    title: '上传资源文件（使用第三方网盘或者URL地址）'
+                    , shadeClose: false
+                    , offset: '180px'
+                    , area: ['550px', '500px']
+                    , id: 'LAY-popup-res-add2'
+                    , success: function (layero, index) {
+                        var that = this;
+                        admin.req({
+                            url: NP_Config.domain + "/admin/rescate/list"
+                            , data: {xmSelect: 1}
+                            , done: function (resp1) {
+                                view(that.id).render('contents/dialog/resform_third', {_type: 'add', _list: resp1.data}).done(function () {
+                                    $.getScript('/notepress-admin/static/plugins/xm-select/xm-select.min.js').done(function () {
+                                        form.render(null, 'layuiadmin-form-res3');
+                                        window._rescateBlock3 = xmSelect.render({
+                                            el: '#rescateBlock3',
+                                            tips: '请选择资源所属分类',
+                                            language: 'zn',
+                                            autoRow: true,
+                                            data: resp1.data,
+                                            toolbar: {
+                                                show: true
+                                            },
+                                            filterable: true,
+                                            paging: true,
+                                            pageSize: 5,
+                                            on: function (data) {
+                                                var srcIds = [];
+                                                for (var i = 0; i < data.arr.length; i++) {
+                                                    srcIds.push(data.arr[i].value);
+                                                }
+                                                window._selectedResCateIds3 = srcIds.join(",");
+                                            }
+                                        });
+
+                                        form.on('submit(LAY-res3-front-submit)', function (data) {
+                                            data.field.cateIdsStr = window._selectedResCateIds3 ? window._selectedResCateIds3 : '';
+                                            admin.req({
+                                                url: NP_Config.domain + "/admin/res/upload3",
+                                                type: "post",
+                                                data: data.field,
+                                                done: function (resp) {
+                                                    layer.msg(resp.message);
+                                                    layui.table.reload('LAY-res-manage'); //重载表格
+                                                    layer.close(index); //执行关闭
+                                                }
+                                            })
+                                        });
+                                    });
+                                });
+                            }
+                        });
+
+                    }
+                });
+
+            }
+
+
+            , delete: function () {
+                var checkStatus = table.checkStatus('LAY-res-manage')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                if (checkData.length !== 1) {
+                    return layer.msg('请选中一行数据');
+                }
+
+                var dataObj = checkData[0];
+                admin.req({
+                    type: 'post',
+                    url: NP_Config.domain + "/admin/res/delete"
+                    , data: {
+                        id: dataObj.id
+                    }
+                    , done: function (resp1) {
+                        layer.msg(resp1.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500)
+                    }
+                });
+
+
+            }
+
+        };
+
+        $('.layui-btn.layuiadmin-btn-res').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+
+
+</script>

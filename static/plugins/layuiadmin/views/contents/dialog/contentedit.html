@@ -1,0 +1,580 @@
+<link rel="stylesheet" type="text/css" href="/notepress-admin/static/plugins/layuiadmin/style/contentae.css">
+<link rel="stylesheet" type="text/css" href="/notepress-admin/static/plugins/editormd/css/editormd.min.css">
+
+
+<title><i class="fa fa-edit"></i> 编辑内容</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>内容管理</cite></a>
+        <a><cite>编辑内容</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_content_edit" style="background: #f6f6f6;height: 100%;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header"><h3><i class="fa fa-info-circle"></i> 添加内容</h3></div>
+                <div class="layui-card-body">
+                    <p><a lay-href="/contents/content" style="color: #1164ff;">返回列表</a></p>
+                    <div class="layui-form" wid100 lay-filter="contentEditForm">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">分类栏目</label>
+                            <div class="layui-input-inline" style="width: 60% !important;">
+                                <div id="categorySelectEdit"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">标题</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" required lay-verify="required" placeholder="请输入标题"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">自定义链接</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="urlSeq" placeholder="请输入文章链接，例：/my_first_blog" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">封面缩略图</label>
+                            <div class="layui-input-inline" style="width: calc(100% - 545px) !important;">
+                                <input name="cover" id="coverEdit" placeholder="封面缩略图" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline layui-btn-container" style="width:auto !important;">
+                                <button type="button" class="layui-btn layui-btn-primary" id="coverBtnEdit">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                                <button class="layui-btn layui-btn-primary" layadmin-event="coverView">查看图片</button>
+                                <button class="layui-btn layui-bg-blue" layadmin-event="choose">选择图片</button>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" style="margin-top: -8px;">
+                            <div class="layui-form-label">TAG</div>
+                            <div class="layui-input-inline">
+                                <div class="tags" id="tagsEdit">
+                                    <input type="text" name="" id="inputTagsEdit" placeholder="回车生成标签" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示状态</label>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" name="visible" value="true" lay-skin="switch"
+                                       lay-text="显示|隐藏">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">SEO关键字</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="seoKeywords" placeholder="请输入meta关键字，逗号分隔，留空则将使用全站的meta关键字设置"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">SEO描述</label>
+                            <div class="layui-input-inline">
+                                <textarea name="seoDescription" class="layui-textarea" placeholder="请输入meta描述内容，留空则将使用全站的meta描述设置"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">内容标签</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="top" title="置顶" value="true">
+                                <input type="checkbox" name="recommend" title="推荐" value="true">
+                                <input type="checkbox" name="hot" title="热门" value="true">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" id="controller">
+                            <label class="layui-form-label">控制</label>
+                            <div class="layui-inline layui-row layui-col-space20">
+                                <div class="layui-col-sm4">
+                                    <input type="checkbox" name="commented" value="true" lay-skin="switch"
+                                           lay-text="评论开启|评论关闭">
+                                </div>
+                                <div class="layui-col-sm4">
+                                    <input type="checkbox" name="appreciable" value="true" lay-skin="switch"
+                                           lay-text="打赏开启|打赏关闭">
+                                </div>
+                                <div class="layui-col-sm4">
+                                    <input type="checkbox" name="reprinted" value="true" lay-skin="switch" lay-filter="reprinted"
+                                           lay-text="转载文章|原创文章">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" id="originUrl" style="display: none;">
+                            <label class="layui-form-label">原文链接</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="originUrl" placeholder="如果是转载的文章，请填写原文链接" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline" style="width: 300px !important;">
+                                <label class="layui-form-label">点赞数</label>
+                                <div class="layui-input-inline" style="width: 100px !important;">
+                                    <input type="number" name="approveCnt" value="0" autocomplete="off" class="layui-input" min="0">
+                                </div>
+                            </div>
+                            <div class="layui-input-inline" style="width: 300px !important;">
+                                <label class="layui-form-label">浏览数</label>
+                                <div class="layui-input-inline" style="width: 100px !important;">
+                                    <input type="number" name="views" value="0" autocomplete="off" class="layui-input" min="0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">发布时间</label>
+                            <div class="layui-input-inline" style="width: 250px !important;">
+                                <input type="text" class="layui-input" id="gmtCreateEdit" placeholder="yyyy-MM-dd HH:mm:ss" name="gmtCreate" readonly>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" id="contentEditorEdit">
+                            <label class="layui-form-label">内容</label>
+                            <div class="layui-input-inline" style="width: calc(100% - 200px) !important;">
+                                <div class="layui-hide"><input type="radio" name="editor" value="markdown" title="markdown编辑器"
+                                                               lay-filter="editor">
+                                    <input type="radio" name="editor" value="html" title="富文本编辑器"
+                                           lay-filter="editor">
+                                    <hr>
+                                </div>
+                                <div id="content-editor-article-edit" style="max-width: 1366px;">
+                                    <textarea id="editor-article-edit" placeholder="输入内容" style="display: none;"></textarea>
+                                </div>
+                                <textarea id="editormd-markdown-doc-edit" name="editormd-markdown-doc-edit"
+                                          style="display:none;"></textarea>
+                                <textarea id="editormd-html-code-edit" name="editormd-html-code-edit" style="display:none;"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-left: 150px !important;">
+                                <button class="layui-btn" id="sub" lay-submit lay-filter="content_edit">确认保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var kindEditorEdit, editorMdEdit;
+    // var currentEditorEdit = "markdown";
+    var K;
+
+
+    layui.define('inputTags').use(['admin', 'form', 'upload', 'jquery', 'inputTags', 'laydate', 'layer'], function () {
+        var admin = layui.admin,
+            upload = layui.upload,
+            $ = layui.jquery,
+            inputTags = layui.inputTags,
+            laydate = layui.laydate,
+            layer = layui.layer,
+            form = layui.form,
+            router = layui.router();
+
+        var categorySelectEdit;
+        var objectKeyId = router.search.id;
+
+        form.render();
+
+        //发布日期
+        laydate.render({
+            elem: '#gmtCreateEdit'
+            , type: 'datetime'
+            , isInitValue: true
+            , format: 'yyyy-MM-dd HH:mm:ss'
+        });
+
+        //封面上传和显示
+        var cover = $("#coverEdit");
+        upload.render({
+            url: NP_Config.domain + '/admin/upload/'
+            , elem: '#coverBtnEdit'
+            , field: 'notepressFile'
+            , data: {
+                reqType: 'lay',
+                code: 8,
+                objectKeyId: objectKeyId
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS && res.data.code === 0) {
+                    cover.val(res.data.data.src);
+                } else {
+                    layer.msg(res.message || res.data.msg, {icon: 5});
+                }
+            }
+        });
+        admin.events.coverView = function (othis) {
+            var src = NP_Config.domain + cover.val();
+            if (src !== '') {
+                layer.photos({
+                    photos: {
+                        "title": "查看封面" //相册标题
+                        , "data": [{"src": src}]
+                    }
+                    , shade: 0.01
+                    , closeBtn: 1
+                    , anim: 5
+                });
+            } else {
+                layer.msg("未识别到图片地址！")
+            }
+        };
+        admin.events.choose = function () {
+            $.get(layui.setter.base + "views/contents/dialog/imglist.html", {}, function (resp) {
+                layer.open({
+                    type: 1,
+                    title: "选择文件",
+                    offset: 'auto',
+                    area: ['730px', '480px'],
+                    closeBtn: 1,
+                    shadeClose: true,
+                    content: resp
+                });
+            });
+        };
+
+
+        // //更换编辑器类型
+        // form.on('radio(editor)', function (data) {
+        //     if (data.value !== currentEditorEdit) {
+        //         layer.confirm('切换编辑器会清空内容，确定切换吗？', function (index) {
+        //             if (data.value === "markdown") {
+        //                 kindEditorEdit.remove();
+        //                 loadEditorMd(objectKeyId, '');
+        //                 currentEditorEdit = "markdown";
+        //             } else if (data.value === "html") {
+        //                 editorMdEdit.editor.remove();
+        //                 loadKindEditor(objectKeyId, "");
+        //                 currentEditorEdit = "html";
+        //             }
+        //             layer.close(index);
+        //         });
+        //     }
+        // });
+
+        //获取编辑对象的详细数据
+        $.ajax({
+            url: NP_Config.domain + "/admin/content/findById?id=" + objectKeyId
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , success: function (successResp) {
+
+                if (successResp.code === NotePress.Constant.CODE_SUCCESS) {
+                    var editObj = successResp.data;
+
+                    //赋值
+                    form.val('contentEditForm', {
+                        'gmtCreate': editObj.gmtCreate
+                        , 'title': editObj.title
+                        , 'urlSeq': editObj.urlSeq
+                        , 'cover': editObj.cover
+                        , "visible": editObj.visible
+                        , 'seoKeywords': editObj.seoKeywords
+                        , 'seoDescription': editObj.seoDescription
+                        , 'top': editObj.top
+                        , 'recommend': editObj.recommend
+                        , 'hot': editObj.hot
+                        , 'commented': editObj.commented
+                        , 'appreciable': editObj.appreciable
+                        , 'reprinted': editObj.reprinted
+                        , 'originUrl': editObj.originUrl
+                        , 'approveCnt': editObj.approveCnt
+                        , 'views': editObj.views
+                    });
+                    if (editObj.reprinted) {
+                        $("#originUrl").css("display", "block")
+                    }
+
+                    //输入标签
+                    inputTags.render({
+                        elem: '#inputTagsEdit',
+                        content: editObj.tags,
+                        aldaBtn: false,
+                        done: function (value) {
+                        }
+                    });
+
+                    $("#LAY_app").on("click","span>button.close",function () {
+                        $(this).parents("span").remove();
+                    });
+                    //赋值编辑对象所属的分类
+                    var selectObj = [];
+                    for (var i = 0; i < editObj.cateList.length; i++) {
+                        var curObj = editObj.cateList[i];
+                        selectObj.push(curObj.id);
+                    }
+                    //文章分类
+                    $.getScript('/notepress-admin/static/plugins/xm-select/xm-select.min.js').done(function () {
+                        categorySelectEdit = xmSelect.render({
+                            el: '#categorySelectEdit',
+                            language: 'zn',
+                            filterable: true,
+                            paging: true,
+                            pageSize: 5,
+                            layVerify: 'required',
+                            layVerType: 'msg',
+                            tips: '搜索分类，如果没有将自动创建',
+                            searchTips: '输入搜索关键字，没有将自动创建',
+                            create: function (val, arr) {
+                                var exist = false;
+                                for (var i = 0; i < arr.length; i++) {
+                                    var caName = arr[i].name;
+                                    if (caName === val) {
+                                        exist = true;
+                                        break;
+                                    }
+                                }
+                                if (!exist) {
+                                    return {
+                                        name: val,
+                                        value: val
+                                    }
+                                }
+                            },
+                            toolbar: {
+                                show: true,
+                                list: ['ALL', 'CLEAR', 'REVERSE']
+                            },
+                            data: []
+                        });
+                        admin.req({
+                            url: NP_Config.domain + "/admin/category/list?xmSelect=1",
+                            done: function (resp) {
+                                categorySelectEdit.update({
+                                    data: resp.data,
+                                    autoRow: true
+                                });
+                                categorySelectEdit.setValue(selectObj);
+                            }
+                        });
+                    });
+
+
+                    //加载编辑器
+                    if (editObj.mdContent !== '' && editObj.mdContent !== null) {
+                        //初始化markdown编辑器
+                        loadEditorMd(objectKeyId, editObj.mdContent);
+                        form.val('contentEditForm', {
+                            'editor': 'markdown'
+                        });
+                    } else {
+                        loadKindEditor(objectKeyId, editObj.htmlContent);
+                        form.val('contentEditForm', {
+                            'editor': 'html'
+                        });
+                    }
+
+
+                } else {
+                    layer.alert("获取 id 为：[" + objectKeyId + "] 的文章失败，请刷新页面重试！");
+                }
+            }
+
+        });
+
+
+        //是否为转载文章
+        form.on('switch(reprinted)', function (data) {
+            if (!data.elem.checked) {
+                $("#originUrl").css("display", "none");
+            } else {
+                $("#originUrl").css("display", "block");
+            }
+        });
+
+        //整个表单提交
+        form.on('submit(content_edit)', function (data) {
+            layer.confirm('确认提交修改？', {
+                btn: ['确认', '取消']
+            }, function (index, layero) {
+                $("#sub").addClass("layui-btn-disabled");
+                delete data.field.select;
+                delete data.field.notepressFile;
+                delete data.field['editormd-article-add-markdown-doc'];
+                delete data.field['editormd-article-add-html-code'];
+                delete data.field['editormd-markdown-doc-edit'];
+                delete data.field['editormd-html-code-edit'];
+
+                if (!data.field.reprinted) {
+                    delete data.field.originUrl;
+                }
+
+                var $tags = $("#tagsEdit>span");
+                var tns = [];
+                $tags.each(function (index, elem) {
+                    tns.push($(elem).find("em").text())
+                });
+                if (data.field.editor === 'html') {
+                    data.field.mdContent = "";
+                    data.field.htmlContent = kindEditorEdit.html();
+                }
+                if (data.field.editor === 'markdown') {
+                    data.field.mdContent = editorMdEdit.getMarkdown();
+                    data.field.htmlContent = editorMdEdit.getHTML();
+                }
+                data.field.tagNames = tns;
+                data.field.cates = categorySelectEdit.getValue('name');
+                data.field.id = objectKeyId;
+                data.field.history = false;
+                admin.req({
+                    url: NP_Config.domain + "/admin/content/modify"
+                    , type: 'post'
+                    , data: data.field
+                    , done: function (resp) {
+                        layer.msg(resp.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500)
+                    }
+                });
+            }, function (index) {
+                layer.close(index);
+            });
+            return false;
+        });
+
+    });
+
+    function loadEditorMd(objectKeyId, _html) {
+        $("#content-editor-article-edit").append("<div id='editormd-article-edit' style='z-index: 999;'></div>");
+        $.getScript("/notepress-admin/static/plugins/editormd/editormd.min.js", function () {
+            editorMdEdit = editormd("editormd-article-edit", {
+                height: 789,
+                autoFocus: false,
+                watch: false,
+                codeFold: true,
+                crossDomainUpload: true,
+                toolbarIcons: function () {
+                    return [
+                        "undo", "redo", "|",
+                        "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                        "h1", "h2", "h3", "h4", "h5", "h6", "|",
+                        "list-ul", "list-ol", "hr", "|",
+                        "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "html-entities", "pagebreak", "|",
+                        "goto-line", "watch", "preview", "clear", "search", "|",
+                        "help", "info"
+                    ]
+                },
+                pluginPath: '/notepress-admin/static/plugins/editormd/plugins/',
+                markdown: "",
+                path: '/notepress-admin/static/plugins/editormd/lib/',
+                placeholder: '',
+                saveHTMLToTextarea: true,
+                searchReplace: true,
+                taskList: true,
+                tex: false,// 开启科学公式TeX语言支持，默认关闭
+                flowChart: false,//开启流程图支持，默认关闭
+                sequenceDiagram: false,//开启时序/序列图支持，默认关闭,
+                imageUpload: true,
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp"],
+                imageUploadURL: NP_Config.domain + "/admin/upload?reqType=lay&code=9&objectKeyId=" + objectKeyId,
+                onload: function () {
+                    this.setMarkdown(_html);
+                    // alert("onload");
+                    // this.setMarkdown("### onloaded");
+                    // console.log("onload =>", this, this.id, this.settings);
+                }
+            });
+        });
+    }
+
+    function loadKindEditor(objectKeyId, _html) {
+        $.getScript('/notepress-admin/static/plugins/wangEditor/wangEditor.js').done(function () {
+            $.getScript('/notepress-admin/static/plugins/nkeditor/NKeditor-all.js').done(function () {
+                KindEditor.lang({
+                    hide4comment: '回复可见',
+                    hide4login: '登录可见',
+                    hide4purchase: '购买可见',
+                    br: '换行'
+                });
+                K = KindEditor;
+                kindEditorEdit = KindEditor.create('#editor-article-edit', {
+                    cssData: 'body {font-family: "Helvetica Neue", Helvetica, "PingFang SC", 微软雅黑, Tahoma, Arial, sans-serif; font-size: 14px}',
+                    width: "auto",
+                    height: "600px",
+                    newlineTag: 'p',
+                    pasteType: 1,
+                    items: [
+                        'source', 'preview', 'undo', 'redo', 'code', 'cut', 'copy', 'paste',
+                        'plainpaste', 'wordpaste', 'justifyleft', 'justifycenter', 'justifyright',
+                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                        'superscript', 'clearhtml', 'quickformat', 'selectall', '/',
+                        'formatblock', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold',
+                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', 'image', 'graft',
+                        'insertfile', 'table', 'hr', 'emoticons', 'pagebreak',
+                        'link', 'unlink', 'about', 'br', '|', 'hide4comment', 'hide4login', 'hide4purchase'
+                    ],
+                    newlineTag: 'br',
+                    uploadJson: NP_Config.domain + '/admin/upload?reqType=nk&code=10&objectKeyId=' + objectKeyId,
+                    uploadGraffitiJson: NP_Config.domain + '/admin/upload/graffiti?reqType=nk&code=10&objectKeyId=' + objectKeyId,
+                    dialogOffset: 0, //对话框距离页面顶部的位置，默认为0居中，
+                    allowImageUpload: true,
+                    allowMediaUpload: true,
+                    themeType: 'black',
+                    fixToolBar: true,
+                    filterMode: false,
+                    autoHeightMode: true,
+                    filePostName: 'file',//指定上传文件form名称，默认imgFile
+                    resizeType: 1,//可以改变高度
+                    afterCreate: function () {
+                        var self = this;
+                        KindEditor.ctrl(document, 13, function () {
+                            self.sync();
+                            K('form[name=example]')[0].submit();
+                        });
+                        KindEditor.ctrl(self.edit.doc, 13, function () {
+                            self.sync();
+                            KindEditor('form[name=example]')[0].submit();
+                        });
+                        KindEditor.lang({
+                            hide4comment: '回复可见',
+                            hide4login: '登录可见',
+                            hide4purchase: '购买可见',
+                            br: '换行'
+                        });
+                        KindEditor.html('#editor-article-edit', _html)
+                    },
+                    afterBlur: function () {
+                        this.sync();
+                    },
+                    //错误处理 handler
+                    errorMsgHandler: function (message, type) {
+                        try {
+                            JDialog.msg({type: type, content: message, timer: 2000});
+                        } catch (Error) {
+                            alert(message);
+                        }
+                    }
+                });
+            })
+        });
+    }
+</script>

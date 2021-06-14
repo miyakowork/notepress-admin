@@ -1,0 +1,54 @@
+#NP_content_add .layui-form-label,
+#NP_content_edit .layui-form-label {
+    width: 120px !important;
+}
+
+#NP_content_add .layui-form-item .layui-input-inline,
+#NP_content_edit .layui-form-item .layui-input-inline {
+    width: calc(100% - 420px) !important;
+}
+
+#NP_content_add #controller .layui-form-switch,
+#NP_content_edit #controller .layui-form-switch {
+    min-width: 75px;
+}
+
+input[disabled] {
+    color: #cccccc;
+    background-color: rgba(194, 194, 194, 0.3);
+}
+
+.ke-container .ke-toolbar .ke-separator {
+    height: 20px !important;
+    margin: 8px 3px !important;
+}
+
+.ke-icon-hide4comment, .ke-icon-hide4login, .ke-icon-hide4purchase, .ke-icon-br {
+    width: 16px;
+    height: 16px;
+}
+
+.ke-icon-hide4comment {
+    background-image: url('/notepress-admin/static/plugins/nkeditor/plugins/hide4comment/comment.png') !important;
+}
+
+.ke-icon-hide4login {
+    background-image: url('/notepress-admin/static/plugins/nkeditor/plugins/hide4login/login.png') !important;
+}
+
+.ke-icon-hide4purchase {
+    background-image: url('/notepress-admin/static/plugins/nkeditor/plugins/hide4purchase/purchase.png') !important;
+}
+
+
+.ke-icon-br {
+    background-image: url('/notepress-admin/static/plugins/nkeditor/plugins/br/br.png') !important;
+}
+
+.layui-form-radio {
+    margin-top: 0 !important;
+}
+
+.editormd-code-toolbar select {
+    display: inline-block !important;
+}

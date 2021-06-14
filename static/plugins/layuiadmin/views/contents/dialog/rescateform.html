@@ -1,0 +1,58 @@
+<style>
+    #NP_rescateform .layui-form-label {
+        width: 80px !important;
+    }
+
+    #NP_rescateform .layui-form-item .layui-input-inline {
+        width: 230px !important;
+    }
+</style>
+<div id="NP_rescateform" class="layui-form" lay-filter="layuiadmin-form-rescate" style="padding: 20px 0 0 0;">
+    <script type="text/html" template>
+        {{#  if(d.params._type === 'edit'){ }}
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="required" readonly>
+        {{#  } }}
+    </script>
+
+    <div class="layui-form-item" lay-filter="pid">
+        <label class="layui-form-label">父节点</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <select name="pid">
+                    <option value="">根节点</option>
+                    {{# layui.each(d.params._list,function(index,item){ }}
+                    <option value="{{item.id}}" {{ d.params.pid=== item.id ?
+                    'selected' : '' }}>{{item.name}} </option>
+                    {{#});}}
+                </select>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="number" min="0" name="orderIndex" value="{{ d.params.orderIndex || '' }}" placeholder="请输入，默认0" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-rescate-front-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+

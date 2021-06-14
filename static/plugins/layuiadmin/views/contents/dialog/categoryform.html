@@ -1,0 +1,140 @@
+<style>
+    #NP_categoryform .layui-form-label {
+        width: 80px !important;
+    }
+
+    #NP_categoryform .layui-form-item .layui-input-inline {
+        width: 230px !important;
+    }
+</style>
+<div id="NP_categoryform" class="layui-form" lay-filter="layuiadmin-form-category" style="padding: 20px 0 0 0;">
+    <script type="text/html" template>
+        {{#  if(d.params._type === 'edit'){ }}
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="required" readonly>
+        {{#  } }}
+    </script>
+
+    <div class="layui-form-item" lay-filter="pid">
+        <label class="layui-form-label">父节点</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <select name="pid">
+                    <option value="">根节点</option>
+                    {{# layui.each(d.params._list,function(index,item){ }}
+                    <option value="{{item.id}}" {{ d.params.pid=== item.id ?
+                    'selected' : '' }}>{{item.nickname}} || {{item.name}}</option>
+                    {{#});}}
+                </select>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类别名</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="nickname" value="{{ d.params.nickname || '' }}" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <script type="text/html" template>
+        {{#  if(d.params._type === 'edit'){ }}
+        <div class="layui-form-item" lay-filter="status">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="true" title="正常" {{ d.params.status=== true ? 'checked' : '' }}>
+                <input type="radio" name="status" value="false" title="禁用" {{ d.params.status=== false ? 'checked' : '' }}>
+            </div>
+        </div>
+        {{#}}}
+    </script>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类图片</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="imgIcon" id="imgIcon" value="{{ (d.params.imgIcon != null && d.params.imgIcon != '') ? NP_Config.domain + d.params.imgIcon || '' : ''}}" placeholder="请输入图片url" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+        <div class="layui-input-inline layui-btn-container" style="width: auto;">
+            <button type="button" class="layui-btn layui-btn-primary" id="imgIconBtn">
+                <i class="layui-icon">&#xe67c;</i>上传图片
+            </button>
+            <button class="layui-btn layui-btn-primary" layadmin-event="imgIconView">查看图片</button>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">字体图标</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="fontIcon" value="{{ d.params.fontIcon || '' }}" placeholder="例：fa fa-list" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+        <div class="layui-input-inline" style="width: auto;padding-top: 7px;">
+            <a href="http://fontawesome.dashgame.com/" target="_blank" style="color: #1E9FFF;">查看字体图标</a>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-category-front-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    layui.use(['upload', 'jquery'], function () {
+        var upload = layui.upload,
+            $ = layui.jquery,
+            admin = layui.admin;
+        var icon = $('#imgIcon');
+
+        upload.render({
+            url: NP_Config.domain + '/admin/upload/'
+            , elem: '#imgIconBtn'
+            , field: 'notepressFile'
+            , data: {
+                reqType: 'lay',
+                code: 7
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS && res.data.code === 0) {
+                    icon.val(res.data.data.src);
+                } else {
+                    layer.msg(res.message || res.data.msg, {icon: 5});
+                }
+            }
+        });
+
+        //查看
+        admin.events.imgIconView = function (othis) {
+            var src = icon.val();
+            layer.photos({
+                photos: {
+                    "title": "查看图标"
+                    , "data": [{
+                        "src": NP_Config.domain + src //原图地址
+                    }]
+                }
+                , shade: 0.01
+                , closeBtn: 1
+                , anim: 5
+            });
+        };
+
+    });
+</script>

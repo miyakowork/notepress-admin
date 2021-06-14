@@ -1,0 +1,91 @@
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="required" readonly>
+    </script>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="username" value="{{ d.params.username || '' }}" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input layui-bg-gray" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户昵称</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="nickname" value="{{ d.params.nickname || '' }}" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="password" placeholder="不修改留空" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="email" value="{{ d.params.email || '' }}" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">头像</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <img id="avatar" src="{{ NP_Config.domain+d.params.avatar || '/notepress-admin/static/assets/image/noavatar.png' }}" class="layui-circle layui-avatar layui-avatar-80" alt="profile-image">
+                <input type="hidden" name="avatar" value="{{NP_Config.domain+ d.params.avatar || '/notepress-admin/static/assets/image/noavatar.png' }}" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+        <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button>
+    </div>
+    <div class="layui-form-item" lay-filter="status">
+        <label class="layui-form-label">账号状态</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="radio" name="status" value="true" title="正常" {{ d.params.status=== true ? 'checked' : '' }}>
+                <input type="radio" name="status" value="false" title="禁用" {{ d.params.status=== false ? 'checked' : '' }}>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-user-front-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form', 'upload'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , upload = layui.upload;
+
+        //上传头像
+        upload.render({
+            elem: '#layuiadmin-upload-useradmin'
+            , url: NP_Config.domain + '/admin/upload'
+            , accept: 'images'
+            , method: 'post'
+            , acceptMime: 'image/*'
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , field: 'notepressFile'
+            , data: {
+                code: 3,
+                reqType: 'lay'
+            }
+            , done: function (res) {
+                $("input[name=avatar]").val(res.data.data.src);
+                $("#avatar").attr("src", NP_Config.domain + res.data.data.src);
+            }
+        });
+    })
+</script>

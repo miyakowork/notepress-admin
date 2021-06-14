@@ -1,0 +1,207 @@
+<title><i class="fa fa-list-alt"></i> 资源分类管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>内容管理</cite></a>
+        <a><cite>资源分类管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_rescate">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-rescate-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">分类名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-category" lay-submit lay-filter="LAY-rescate-front-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-category" data-type="add"><i class="fa fa-plus-square-o"></i> 添加</button>
+                <button class="layui-btn layuiadmin-btn-category" data-type="edit"><i class="fa fa-edit"></i> 编辑</button>
+            </div>
+
+            <table id="LAY-rescate-manage" lay-filter="LAY-rescate-manage"></table>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['table', 'form', 'admin'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , form = layui.form;
+
+        form.render(null, 'layadmin-rescate-formlist');
+
+        //分类管理
+        var resCateTable = table.render({
+            elem: '#LAY-rescate-manage'
+            , url: NP_Config.domain + '/admin/rescate'
+            , cols: [[
+                {type: 'radio', fixed: 'left'}
+                , {field: 'id', width: 80, title: 'ID', sort: true}
+                , {
+                    field: 'pid', width: 80, title: '父ID', sort: true, templet: function (d) {
+                        return d.pid !== null ? d.pid : "根节点";
+                    }
+                }
+                , {field: 'name', title: '分类名'}
+            ]]
+            , where: {
+                extra: {
+                    name: $("input[name=name]").val()
+                }
+            }
+        });
+
+        //排序
+        table.on('sort(LAY-rescate-manage)', function (obj) {
+            resCateTable.reload({
+                initSort: obj
+                , where: {
+                    sort: obj.field
+                    , order: obj.type
+                }
+            });
+        });
+
+        //监听搜索
+        form.on('submit(LAY-rescate-front-search)', function (data) {
+            table.reload('LAY-rescate-manage', {
+                where: {
+                    extra: {
+                        name: data.field.name
+                    }
+                }
+            });
+        });
+
+        //事件
+        var active = {
+
+            add: function () {
+
+                admin.popup({
+                    title: '添加资源分类'
+                    , shadeClose: false
+                    , offset: '180px'
+                    , area: ['500px', '350px']
+                    , id: 'LAY-popup-rescate-add'
+                    , success: function (layero, index) {
+                        var that = this;
+                        admin.req({
+                            url: NP_Config.domain + "/admin/rescate/list"
+                            , done: function (resp1) {
+                                view(that.id).render('contents/dialog/rescateform', {_type: 'add', _list: resp1.data}).done(function () {
+                                    form.render(null, 'layuiadmin-form-rescate');
+
+                                    //监听提交
+                                    form.on('submit(LAY-rescate-front-submit)', function (data) {
+                                        var field = data.field; //获取提交的字段
+
+                                        admin.req({
+                                            url: NP_Config.domain + "/admin/rescate/add"
+                                            , type: "post"
+                                            , data: field
+                                            , done: function (resp) {
+                                                layer.msg(resp.message);
+                                                layui.table.reload('LAY-rescate-manage'); //重载表格
+                                                layer.close(index); //执行关闭
+                                            }
+                                        });
+                                    });
+                                });
+                            }
+                        });
+
+                    }
+                });
+
+            }
+
+            , edit: function () {
+                var checkStatus = table.checkStatus('LAY-rescate-manage')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                if (checkData.length !== 1) {
+                    return layer.msg('请选中一行数据');
+                }
+
+                var dataObj = checkData[0];
+                dataObj._type = 'edit';
+                admin.req({
+                    url: NP_Config.domain + "/admin/rescate/list"
+                    , done: function (resp1) {
+                        dataObj._list = resp1.data;
+                        admin.popup({
+                            title: '编辑分类'
+                            , shadeClose: false
+                            , offset: '180px'
+                            , area: ['700px', '500px']
+                            , id: 'LAY-popup-rescate-add'
+                            , success: function (layero, index) {
+                                view(this.id).render('contents/dialog/rescateform', dataObj).done(function () {
+                                    form.render(null, 'layuiadmin-form-rescate');
+
+                                    //监听提交
+                                    form.on('submit(LAY-rescate-front-submit)', function (data) {
+                                        var field = data.field; //获取提交的字段
+
+                                        admin.req({
+                                            url: NP_Config.domain + "/admin/rescate/update"
+                                            , type: "post"
+                                            , data: field
+                                            , done: function (resp) {
+                                                layer.msg(resp.message);
+                                                layui.table.reload('LAY-rescate-manage'); //重载表格
+                                                layer.close(index); //执行关闭
+                                            }
+                                        });
+                                    });
+                                });
+                            }
+                        });
+                    }
+                });
+
+
+            }
+
+        };
+
+        $('.layui-btn.layuiadmin-btn-category').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+
+    function showImg(imgSrc) {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto'],
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: "<img style='width: 200px;height:200px;' src='" + $(imgSrc).attr("src") + "/'>"
+        });
+    }
+</script>

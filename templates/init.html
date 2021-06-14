@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>笔记博客初始化设置</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--    <meta name="viewport"-->
+    <!--          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">-->
+    <link rel="shortcut icon" href="/notepress-admin/static/assets/image/notepress-sm.png">
+    <link rel="stylesheet" href="/notepress-admin/static/assets/css/global.css">
+    <link rel="stylesheet" href="/notepress-admin/static/plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="/notepress-admin/static/assets/css/init.css">
+    <link rel="stylesheet" href="/notepress-admin/static/assets/css/layui-notepress.css">
+    <link rel="stylesheet" href="/notepress-admin/static/plugins/font-awesome/css/font-awesome.min.css">
+</head>
+<body class="layui-container init-body">
+<div class="layui-row tac">
+    <a href="//wuwenbin.me/content/u/notepress" target="_blank"><img src="/notepress-admin/static/assets/image/notepress-lg.png" alt="NotePress" class="notepress-logo"></a>
+</div>
+<div class="layui-row layui-col-space20">
+    <div class="layui-col-sm8">
+        <div class="layui-init-container">
+            <blockquote class="layui-elem-quote layui-text">
+                <p class="layui-slogan"><span>NotePress</span>&nbsp;初始化设置
+                    <small class="layui-danger-attention">注：红色字体，带<span class="layui-danger-star">*</span>的为必填项目</small></p>
+
+            </blockquote>
+            <hr class="hr layui-bg-gray">
+            <form class="layui-form" onkeydown="if (event.keyCode === 13) {layer.msg('请不要回车键键操作！', {icon: 2});return false;}">
+                <div id="base-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            站点标题
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="website_title" required lay-verify="required"
+                                   placeholder="网站标题"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <small class="layui-danger-text"><b>浏览器选项卡处的标题</b></small>
+                            <span class="layui-danger-star">*</span>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            您的邮箱
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="email" required lay-verify="required|mail"
+                                   placeholder="用来接收网站的通知，如用户评论"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux ">
+                            <small><b>需要设置邮件服务器</b></small>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            主站域名
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="websiteDomain" required lay-verify="required"
+                                   placeholder="主站访问域名"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux ">
+                            <small><b>根据您的服务器配置决定</b></small>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            您的用户名
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="username" required lay-verify="required|username"
+                                   placeholder="登录账号"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <small class="layui-danger-text"><b>管理员账号</b></small>
+                            <span class="layui-danger-star">*</span>
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            登录密码
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="password" required lay-verify="required|pass"
+                                   placeholder="登录密码"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <small class="layui-danger-text"><b>管理员登录密码</b></small>
+                            <span class="layui-danger-star">*</span>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            重录密码
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="repeatPass" required lay-verify="required|repeatPass"
+                                   placeholder="重复输入上面的密码"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <small class="layui-danger-text"><b>重复上面输入的密码</b></small>
+                            <span class="layui-danger-star">*</span>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            您的昵称
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="nickname" required lay-verify="required|username"
+                                   placeholder="昵称"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <small class="layui-danger-text"><b>文章署名等</b></small>
+                            <span class="layui-danger-star">*</span>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">您的头像</label>
+                        <div class="layui-input-inline" style="width: 300px;">
+                            <img id="avatar" src="/notepress-admin/static/assets/image/noavatar.png" class="layui-circle" alt="profile-image">
+                            <input type="hidden" name="np_avatar" id="avatarField" value="/static/assets/img/noavatar.png">
+                            <div class="layui-inline" style="margin-left: 20px;">
+                                <a id="uploadAvatar" style="cursor: pointer;">选择图片</a>
+                                <button class="layui-btn layui-btn-sm" type="button" style="margin-left: 20px;" id="doUploadAvatar">上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-bottom: 0;display: none;" id="uploadStatus">
+                    <label class="layui-form-label" style="padding-bottom: 0;padding-top: 0;">&nbsp;</label>
+                    <div class="layui-input-inline">
+                        <p style="color: #5FB878;margin-left: 10px;">已上传 <i class="layui-icon layui-icon-ok"></i></p>
+                    </div>
+                </div>
+
+                <div id="advance-form" style="display: none;">
+
+                    <p> 以下为 NotePress 的相关设置和配置，如需更改，请返回上一步或者移步【notepress.setting】配置文件中进行更改！</p>
+                    <table class="layui-table" lay-even="" lay-skin="nob">
+                        <colgroup>
+                            <col width="150">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th><b>配置/参数项目</b></th>
+                            <th><b>对应值</b></th>
+                            <th><b>配置/参数项目</b></th>
+                            <th><b>对应值</b></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>管理员账号</td>
+                            <td id="adminTxt"></td>
+                            <td>管理员密码</td>
+                            <td id="passTxt"></td>
+                        </tr>
+                        <tr>
+                            <td>用户昵称</td>
+                            <td id="nameTxt"></td>
+                            <td>邮箱</td>
+                            <td id="mailTxt"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <table class="layui-table" lay-even="" lay-skin="nob">
+                        <colgroup>
+                            <col width="150">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th><b>配置/参数项目</b></th>
+                            <th><b>对应值（如需修改，请修改 notepress.setting 文件）</b></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>文件上传路径</td>
+                            <td id="uploadPath"> loading...</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="hr layui-bg-gray">
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="button" id="next">下一步&nbsp;&gt;&gt;</button>
+                        <button class="layui-btn" type="button" id="prev" style="display: none;">&lt;&lt;&nbsp;上一步</button>
+                        <button class="layui-btn" id="submit" type="submit" lay-submit lay-filter="nbInit"
+                                style="display: none;">提交
+                        </button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="layui-col-sm4">
+        <div class="layui-init-container-right">
+            <blockquote class="layui-elem-quote layui-text">
+                <p class="layui-slogan"><span>NotePress</span>&nbsp;相关参考</p>
+            </blockquote>
+            <ul class="layui-timeline">
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h4 class="layui-timeline-title layui-danger-text">运行环境要求（软件 & 硬件）</h4>
+                        <p>Java环境：JDK 8（不推荐其他版本）</p>
+                        <p class="mt-2">MySQL：[5.7,8)（推荐 5.7.25）</p>
+                        <p class="mt-2">OS：Linux / Window Server（推荐 CentOS 7）</p>
+                        <p class="mt-2">CPU：2核 2GB 及以上（推荐 4核 4GB）</p>
+                        <p class="mt-2">带宽：2Mbps及以上</p>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/notepress-admin/static/plugins/layui/layui.js"></script>
+<script src="/notepress-admin/static/plugins/jquery/jquery-1.11.3.min.js"></script>
+<script src="/notepress-admin/static/assets/js/app.config.js"></script>
+<script src="/notepress-admin/static/assets/js/app.global.js"></script>
+<script src="/notepress-admin/static/plugins/md5/md5.min.js"></script>
+<script src="/notepress-admin/static/assets/js/init.js"></script>
+<script>
+    $(function () {
+        $("input[name=domain]").val(getUrlParam("main_site"));
+        $.ajax({
+            type: "get",
+            url: NP_Config.domain + "/init/status",
+            dataType: "json",
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            success: function (resp) {
+                if (resp.code === NotePress.Constant.CODE_SUCCESS && resp.data) {
+                    location.href = "/notepress-admin/templates/admin/index.html";
+                }
+            }
+        });
+    });
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+</script>
+
+</body>
+</html>

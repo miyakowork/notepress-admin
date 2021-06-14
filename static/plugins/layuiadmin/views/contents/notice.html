@@ -1,0 +1,184 @@
+<title><i class="fa fa-comments-o"></i> 消息中心</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>消息中心</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_notice">
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief" lay-filter="notice-tabs">
+            <ul class="layui-tab-title" id="tabsHtml">
+
+
+            </ul>
+            <div class="layui-tab-content">
+
+                <div class="layui-tab-item layui-show">
+                    <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" data-events="del"><i class="fa fa-remove"></i> 删除消息</button>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" data-events="ready"><i class="fa fa-star-o"></i> 标记已读</button>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" data-events="readyAll"><i class="fa fa-star"></i> 全部已读</button>
+                    </div>
+
+                    <table id="NP_notice_all" lay-filter="NP_notice_all"></table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tabs">
+    {{# layui.each(d,function(index,item){}}
+    {{#if(item.tabName === '全部消息'){ }}
+    <li class="layui-this" data-type=""><b>{{item.tabName}}</b>
+        {{# if(item.tabTip > 0){ }}
+        <span class="layui-badge">{{item.tabTip}}</span>
+        {{#} }}
+    </li>
+    {{#}else{ }}
+    <li data-type="{{item.tabName}}">{{item.tabName}}
+        {{# if(item.tabTip > 0){ }}
+        <span class="layui-badge">{{item.tabTip}}</span>
+        {{#} }}
+    </li>
+    {{#}}}
+    {{#}); }}
+</script>
+<script>
+    layui.use(['admin', 'table', 'util', 'laytpl'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , table = layui.table
+            , laytpl = layui.laytpl
+            , element = layui.element;
+
+        element.on('tab(notice-tabs)', function (obj) {
+            var that = this;
+            //全部消息
+            table.reload('NP_notice_all', {
+                url: NP_Config.domain + '/admin/notice' //模拟接口
+                , where: {
+                    extra: {
+                        "pageType": $(that).attr("data-type")
+                    }
+                }
+            });
+        });
+
+        admin.req({
+            url: NP_Config.domain + "/admin/notice/tabs"
+            , done: function (resp) {
+                var getTpl = document.getElementById("tabs").innerHTML
+                    , v = document.getElementById('tabsHtml');
+                laytpl(getTpl).render(resp.data, function (html) {
+                    v.innerHTML = html;
+                });
+            }
+        });
+
+
+        //标题内容模板
+        var tplTitle = function (d) {
+            return '<a lay-href="contents/dialog/detail/id=' + d.id + '">' + d.commentText;
+        };
+
+        //全部消息
+        table.render({
+            elem: '#NP_notice_all'
+            , url: NP_Config.domain + '/admin/notice' //模拟接口
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'commentText', title: '消息内容', minWidth: 300, templet: tplTitle}
+                , {
+                    field: 'isRead', title: '状态', width: 100, templet: function (d) {
+                        return !d.isRead ? '<span class="layui-badge">未读</span>' : '<span class="layui-badge layui-bg-blue">已读</span>'
+                    }
+                }
+                , {field: 'gmtCreate', title: '时间', width: 170, templet: '<div>{{ layui.util.timeAgo(d.gmtCreate) }}</div>'}
+            ]]
+            , skin: 'line'
+        });
+
+
+        //事件处理
+        var events = {
+            del: function (othis, type) {
+                var checkStatus = table.checkStatus('NP_notice_all')
+                    , data = checkStatus.data; //获得选中的数据
+                if (data.length === 0) return layer.msg('未选中行');
+                var ids = [];
+                for (var i = 0; i < data.length; i++) {
+                    ids.push(data[i].id);
+                }
+
+                layer.confirm('确定删除选中的消息吗？', function () {
+                    admin.req({
+                        url: NP_Config.domain + "/admin/notice/delete"
+                        , type: "post"
+                        , data: {ids: ids}
+                        , done: function () {
+                            layer.msg('删除成功', {icon: 1});
+                            location.reload();
+                        }
+                    });
+
+                });
+            }
+
+            , ready: function (othis, type) {
+                var checkStatus = table.checkStatus('NP_notice_all')
+                    , data = checkStatus.data; //获得选中的数据
+                if (data.length === 0) return layer.msg('未选中行');
+                var ids = [];
+                for (var i = 0; i < data.length; i++) {
+                    ids.push({id: data[i].id, isRead: true});
+                }
+
+                admin.req({
+                    url: NP_Config.domain + "/admin/notice/read"
+                    , type: "post"
+                    , contentType: 'application/json'
+                    , data: JSON.stringify(ids)
+                    , done: function () {
+                        layer.msg('状态更新成功！', {icon: 1});
+                        location.reload();
+                    }
+                });
+            }
+
+            , readyAll: function (othis, type) {
+                admin.req({
+                    url: NP_Config.domain + "/admin/session/notice"
+                    , done: function (resp1) {
+                        if (resp1.data > 0) {
+                            var pageType = $("#tabsHtml>li.layui-this").attr("data-type");
+                            admin.req({
+                                url: NP_Config.domain + "/admin/notice/readAll"
+                                , type: "post"
+                                , data: {pageType: pageType}
+                                , done: function () {
+                                    layer.msg('状态更新成功！', {icon: 1});
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            layer.msg("全部消息已读！")
+                        }
+                    }
+                });
+
+            }
+        };
+
+        $('.LAY-app-message-btns .layui-btn').on('click', function () {
+            var othis = $(this)
+                , thisEvent = othis.data('events')
+                , type = othis.data('type');
+            events[thisEvent] && events[thisEvent].call(this, othis, type);
+        });
+    });
+</script>

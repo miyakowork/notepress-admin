@@ -1,0 +1,464 @@
+<style>
+    #NP_def_theme_style .layui-form-label {
+        width: 80% !important;
+    }
+
+    #NP_def_theme_style .bg-simple {
+        background: #ececec;
+    }
+</style>
+
+<title><i class="fa fa-dot-circle-o"></i> 风格设置</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>主题设置</cite></a>
+        <a><cite>风格设置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_def_theme_style">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md4">
+
+
+            <div class="layui-card layui-form" lay-filter="typesetting">
+                <div class="layui-card-header">首页排版设置</div>
+                <div class="layui-card-body">
+                    <blockquote class="layui-elem-quote">说明：页面总共分为12列</blockquote>
+                    <p>
+                        <input type="radio" name="typesetting" lay-filter="typesetting" value="left3right9" title="左边栏模式（侧边栏在左，左3右9）">
+                    </p>
+                    <p>
+                        <input type="radio" name="typesetting" lay-filter="typesetting" value="left9right3" title="右边栏模式（侧边栏在右，左9右3）">
+                    </p>
+                    <p>
+                        <input type="radio" name="typesetting" lay-filter="typesetting" value="left6right6" title="两栏等分模式（每栏各占一半，左6右6）">
+                    </p>
+                    <p>
+                        <input type="radio" name="typesetting" lay-filter="typesetting" value="colcard" title="卡片封面形式（无侧边栏，每个卡片占4）">
+                    </p>
+                </div>
+            </div>
+
+            <div class="layui-card layui-form" lay-filter="notetypesetting">
+                <div class="layui-card-header">笔记页面排版设置</div>
+                <div class="layui-card-body">
+                    <blockquote class="layui-elem-quote">说明：仅对该主题生效！</blockquote>
+                    <p>
+                        <input type="radio" name="notetypesetting" lay-filter="notetypesetting" value="noteblogv5" title="怀旧风格（笔记博客v5 风格）">
+                    </p>
+                    <p>
+                        <input type="radio" name="notetypesetting" lay-filter="notetypesetting" value="notepress" title="默认风格（NotePress 新版风格）">
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-col-md4">
+
+            <div class="layui-form" lay-filter="text-filter">
+                <div class="layui-card">
+                    <div class="layui-card-header">导航栏设置</div>
+                    <div class="layui-card-body">
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm6">
+                                    <label class="layui-form-label">导航栏：[content]</label>
+                                </div>
+                                <div class="layui-col-xs5 layui-col-sm6">
+                                    <input type="text" name="menu_home" placeholder="请输入文本" autocomplete="off" class="layui-input"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm6">
+                                    <label class="layui-form-label">导航栏：[note]</label>
+                                </div>
+                                <div class="layui-col-xs5 layui-col-sm6">
+                                    <input type="text" name="menu_note" placeholder="请输入文本" autocomplete="off" class="layui-input"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm6">
+                                    <label class="layui-form-label">导航栏：[message]</label>
+                                </div>
+                                <div class="layui-col-xs5 layui-col-sm6">
+                                    <input type="text" name="menu_message" placeholder="请输入文本" autocomplete="off" class="layui-input"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm6">
+                                    <label class="layui-form-label">导航栏：[purchase]</label>
+                                </div>
+                                <div class="layui-col-xs5 layui-col-sm6">
+                                    <input type="text" name="menu_purchase" placeholder="请输入文本" autocomplete="off" class="layui-input"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs2 layui-col-sm3 layui-col-xs-offset4 layui-col-sm-offset6">
+                                    <button class="layui-btn-sm layui-btn layui-btn-fluid" lay-submit lay-filter="confSettings">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form" lay-filter="custom-filter">
+                <div class="layui-card">
+                    <div class="layui-card-header">导航栏自定义图标设置</div>
+                    <div class="layui-card-body">
+
+                        <blockquote class="layui-elem-quote">url 留空则不显示此导航图标</blockquote>
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs4 layui-col-sm3">
+                                    <label class="layui-form-label">图标样式</label>
+                                </div>
+                                <div class="layui-col-xs8 layui-col-sm9">
+                                    <input type="text" name="icon" placeholder="loading..." autocomplete="off" class="layui-input"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs4 layui-col-sm3">
+                                    <label class="layui-form-label">导航名称</label>
+                                </div>
+                                <div class="layui-col-xs8 layui-col-sm9">
+                                    <input type="text" name="name" placeholder="loading..." autocomplete="off" class="layui-input"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs4 layui-col-sm3">
+                                    <label class="layui-form-label">url地址</label>
+                                </div>
+                                <div class="layui-col-xs8 layui-col-sm9">
+                                    <input type="text" name="url" placeholder="loading..." autocomplete="off" class="layui-input"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs2 layui-col-sm3 layui-col-xs-offset4 layui-col-sm-offset6">
+                                    <button class="layui-btn-sm layui-btn layui-btn-fluid" lay-submit lay-filter="customSettings">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="layui-col-md4" id="conf3">
+
+            <div class="layui-card layui-form" lay-filter="article_page_style">
+                <div class="layui-card-header">内容详细页面布局设置</div>
+                <div class="layui-card-body">
+                    <input type="radio" name="article_page_style" lay-filter="article_page_style" value="0"
+                           title="无侧边栏">
+                    <input type="radio" name="article_page_style" lay-filter="article_page_style" value="1"
+                           title="右侧侧边栏">
+                    <input type="radio" name="article_page_style" lay-filter="article_page_style" value="-1"
+                           title="左侧侧边栏">
+                </div>
+            </div>
+
+            <div class=" layui-form" lay-filter="text2-filter">
+                <div class="layui-card">
+                    <div class="layui-card-header">其他参数设置</div>
+                    <div class="layui-card-body">
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm5">
+                                    <label class="layui-form-label">首页顶部文字</label>
+                                </div>
+                                <div class="layui-col-xs6 layui-col-sm7">
+                                    <input type="text" name="index_top_text" placeholder="请输入文本" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm5">
+                                    <label class="layui-form-label">推广页面文章分类</label>
+                                </div>
+                                <div class="layui-col-xs6 layui-col-sm7">
+                                    <div id="purchaseCateSelect"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row">
+                                <blockquote class="layui-elem-quote">笔记的内容请用markdown编辑器编写内容</blockquote>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm5">
+                                    <label class="layui-form-label">笔记页面文章分类</label>
+                                </div>
+                                <div class="layui-col-xs6 layui-col-sm7">
+                                    <div id="noteCateSelect"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-row">
+                                <blockquote class="layui-elem-quote">指定哪个分类首页不显示</blockquote>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs7 layui-col-sm5">
+                                    <label class="layui-form-label">分类</label>
+                                </div>
+                                <div class="layui-col-xs6 layui-col-sm7">
+                                    <div id="noneCateSelect"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs2 layui-col-sm3 layui-col-xs-offset3 layui-col-sm-offset5">
+                                    <button class="layui-btn-sm layui-btn layui-btn-fluid" lay-submit lay-filter="otherSettings">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    layui.use(['form', 'admin'], function () {
+        var form = layui.form,
+            admin = layui.admin;
+
+        var noteCate, purchaseCate, noneCate;
+
+
+        form.render();
+
+        form.on('radio(typesetting)', function (data) {
+            var _data = {"typesetting": data.value};
+            admin.req({
+                url: NP_Config.domain + "/admin/theme/update",
+                type: "post",
+                data: {
+                    confStr: JSON.stringify(_data)
+                },
+                done: function (json) {
+                    layer.msg(json.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        form.on('radio(notetypesetting)', function (data) {
+            var _data = {"notetypesetting": data.value};
+            admin.req({
+                url: NP_Config.domain + "/admin/theme/update",
+                type: "post",
+                data: {
+                    confStr: JSON.stringify(_data)
+                },
+                done: function (json) {
+                    layer.msg(json.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        form.on('radio(article_page_style)', function (data) {
+            var _data = {"article_page_style": data.value};
+            admin.req({
+                url: NP_Config.domain + "/admin/theme/update",
+                type: "post",
+                data: {
+                    confStr: JSON.stringify(_data)
+                },
+                done: function (json) {
+                    layer.msg(json.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        form.on('submit(confSettings)', function (data) {
+            var _data = {
+                "nav_menus": {
+                    "menu_home": data.field.menu_home,
+                    "menu_note": data.field.menu_note,
+                    "menu_message": data.field.menu_message,
+                    "menu_purchase": data.field.menu_purchase
+                }
+            };
+            admin.req({
+                url: NP_Config.domain + "/admin/theme/update",
+                type: "post",
+                data: {
+                    confStr: JSON.stringify(_data)
+                },
+                done: function (json) {
+                    layer.msg(json.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        form.on('submit(customSettings)', function (data) {
+            var _data = {
+                "zdy": {
+                    "icon": data.field.icon,
+                    "name": data.field.name,
+                    "url": data.field.url
+                }
+            };
+            admin.req({
+                url: NP_Config.domain + "/admin/theme/update",
+                type: "post",
+                data: {
+                    confStr: JSON.stringify(_data)
+                },
+                done: function (json) {
+                    layer.msg(json.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+
+        form.on('submit(otherSettings)', function (data) {
+            data.field.noteCates = noteCate.getValue('valueStr').split(",").join(".");
+            data.field.purchaseCates = purchaseCate.getValue('valueStr').split(",").join(".");
+            data.field.noneCates = noneCate.getValue('valueStr').split(",").join(".");
+            admin.req({
+                url: NP_Config.domain + "/admin/theme/update",
+                type: "post",
+                data: {
+                    confStr: JSON.stringify(data.field)
+                },
+                done: function (json) {
+                    layer.msg(json.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+
+        $(function () {
+
+
+            admin.req({
+                url: NP_Config.domain + "/global/conf"
+                , done: function (resp) {
+                    var _data = JSON.parse(resp.data.def_theme_conf);
+                    form.val('typesetting', {
+                        'typesetting': _data.typesetting
+                    });
+                    form.val('notetypesetting', {
+                        'notetypesetting': _data.notetypesetting
+                    });
+                    form.val('article_page_style', {
+                        'article_page_style': _data.article_page_style
+                    });
+
+                    form.val('text-filter', {
+                        "menu_home": _data.nav_menus.menu_home,
+                        "menu_note": _data.nav_menus.menu_note,
+                        "menu_message": _data.nav_menus.menu_message,
+                        "menu_purchase": _data.nav_menus.menu_purchase
+                    });
+
+                    form.val('custom-filter', {
+                        "icon": _data.zdy.icon || "",
+                        "name": _data.zdy.name || "",
+                        "url": _data.zdy.url || ""
+                    });
+
+                    form.val('text2-filter', {
+                        "index_top_text": _data.index_top_text
+                    });
+                    $.getScript('/notepress-admin/static/plugins/xm-select/xm-select.min.js').done(function () {
+                        admin.req({
+                            url: NP_Config.domain + "/admin/category/list",
+                            data: {xmSelect: 1},
+                            done: function (resp) {
+                                noteCate = xmSelect.render({
+                                    el: '#noteCateSelect',
+                                    language: 'zn',
+                                    autoRow: true,
+                                    data: resp.data
+                                });
+                                purchaseCate = xmSelect.render({
+                                    el: '#purchaseCateSelect',
+                                    language: 'zn',
+                                    autoRow: true,
+                                    data: resp.data
+                                });
+                                noneCate = xmSelect.render({
+                                    el: '#noneCateSelect',
+                                    language: 'zn',
+                                    autoRow: true,
+                                    data: resp.data
+                                });
+                                if (_data.noteCates) {
+                                    noteCate.setValue(_data.noteCates.split("."));
+                                }
+                                if (_data.purchaseCates) {
+                                    purchaseCate.setValue(_data.purchaseCates.split("."));
+                                }
+                                if (_data.noneCates) {
+                                    noneCate.setValue(_data.noneCates.split("."));
+                                }
+
+                            }
+                        })
+
+                    });
+
+                }
+            });
+        });
+
+
+    });
+</script>

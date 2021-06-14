@@ -1,0 +1,109 @@
+/** Created By Wuwenbin https://wuwenbin.me
+ * mail to wuwenbinwork@163.com
+ * 欢迎加入我们，QQ群：697053454
+ * if you use the code,  please do not delete the comment
+ * 如果您使用了此代码，请勿删除此头部注释
+ * */
+.layui-container {
+    background-color: #ffffff;
+}
+
+.init-body {
+
+    margin-bottom: 100px;
+}
+
+
+.layui-slogan {
+    font-size: 14px;
+}
+
+.layui-slogan > span:first-child {
+    color: #2F4056;
+    font-style: italic;
+}
+
+.layui-danger-star, .layui-danger-attention, .layui-danger-text {
+    color: #F44336 !important;
+}
+
+.hr {
+    margin-bottom: 20px;
+}
+
+.layui-init-container {
+    margin-top: 30px;
+    background-color: #ffffff;
+    padding: 30px 80px;
+    box-shadow: 0 0 5px #a2a2a2;
+    display: block;
+}
+
+.layui-init-container-right {
+    margin-top: 30px;
+    background-color: #ffffff;
+    padding: 30px 10px;
+    box-shadow: 0 0 5px #a2a2a2;
+    display: block;
+}
+
+@media screen and (max-width: 991px) {
+    .layui-input {
+        width: 100% !important;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .layui-input {
+        width: 300px !important;
+    }
+}
+
+.layui-edge {
+    right: -100px !important;
+}
+
+.layui-form-mid {
+    margin-left: 120px !important;
+}
+
+.notepress-logo {
+    height: 80px;
+    margin-top: 3%;
+}
+
+.tac {
+    text-align: center;
+}
+
+.upload-div {
+    margin-left: 100px;
+}
+
+#avatar {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #CCCCCC;
+}
+
+.layui-table {
+    color: #000000 !important;
+}
+
+.layui-table tr td:nth-child(2),.layui-table tr td:nth-child(4) {
+    color: #000000;
+    font-weight: bolder;
+}
+.layui-table tr td:nth-child(2) b,.layui-table tr td:nth-child(4) b {
+    color: #F44336;
+    font-weight: bolder;
+}
+
+.layui-table tr:hover td {
+    color: #000000;
+}
+
+.layui-table tbody tr:hover {
+    background: #CCCCCC !important;
+    color: #000000 !important;
+}

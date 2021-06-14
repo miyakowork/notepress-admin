@@ -1,0 +1,272 @@
+<style>
+    #LAY-content-list .layui-form-label {
+        width: 120px !important;
+    }
+
+    #LAY-content-list .layui-input-block {
+        margin-left: 150px !important;
+    }
+
+    #LAY-content-list .layui-btn-sm {
+        line-height: 34px !important;
+    }
+</style>
+
+<title><i class="fa fa-book"></i> 文章管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>内容管理</cite></a>
+        <a><cite>文章管理</cite></a>
+    </div>
+</div>
+
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="LAY-content-list">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12">
+            <div class="layui-card">
+                <div class=" layui-card-header layuiadmin-card-header-auto">
+                    <div id="user-table-search" class="layui-form" lay-filter="layadmin-content-formlist">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">标题：</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" name="content-title-search" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">状态：</label>
+                                <div class="layui-input-block">
+                                    <select name="visible">
+                                        <option value="">全部</option>
+                                        <option value="true">正常</option>
+                                        <option value="false">已删除</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">内容分类：</label>
+                                <div class="layui-input-block">
+                                    <div class="layui-input-inline">
+                                        <div id="cateBlock"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">板块分类：</label>
+                                <div class="layui-input-block">
+                                    <div class="layui-input-inline">
+                                        <div id="tagBlocks"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-forum-list" lay-submit lay-filter="LAY-content-front-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <table id="content-table" lay-filter="content"></table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/html" id="contentToolbar">
+    <div class="layui-btn-container">
+        <a class="layui-btn layuiadmin-btn-content" lay-href="/contents/dialog/contentadd"><i class="fa fa-plus-square-o"></i> 新增</a>
+    </div>
+</script>
+
+<script type="text/html" id="contentBar">
+    <a class="layui-btn layui-bg-blue layui-btn-sm" target="_blank" lay-tips="编辑内容"
+       lay-href="/contents/dialog/contentedit/id={{d.id}}"><i class="fa fa-edit"></i></a>
+    <a class="layui-btn layui-bg-red layui-btn-sm" lay-event="del" lay-tips="删除"><i class="fa fa-remove"></i></a>
+</script>
+
+<script type="text/html" id="tagTpl">
+    <input type="checkbox" name="top" title="置顶" value="true" lay-filter="tagDemo" data-cid="{{d.id}}" {{ d.top ? 'checked' : '' }} >
+    &nbsp;<input type="checkbox" name="recommend" title="推荐" value="true" lay-filter="tagDemo" data-cid="{{d.id}}" {{ d.recommend ? 'checked' : '' }}>
+    &nbsp;<input type="checkbox" name="hot" title="热门" value="true" lay-filter="tagDemo" data-cid="{{d.id}}" {{ d.hot ? 'checked' : '' }}>
+</script>
+
+<script src="/notepress-admin/static/plugins/tinymce/jquery.tinymce.min.js"></script>
+<script>
+
+    layui.use(["form", "table", "element", 'admin'], function () {
+        var $ = layui.$,
+            table = layui.table
+            , form = layui.form
+            , admin = layui.admin
+            , element = layui.element;
+
+        element.render();
+        var tagBlock, cateBlock;
+        $.getScript('/notepress-admin/static/plugins/xm-select/xm-select.min.js').done(function () {
+            form.render(null, 'layadmin-content-formlist');
+            tagBlock = xmSelect.render({
+                el: '#tagBlocks',
+                language: 'zn',
+                autoRow: true,
+                data: [
+                    {name: '置顶', value: 1},
+                    {name: '热门', value: 2},
+                    {name: '推荐', value: 3}
+                ]
+            });
+            admin.req({
+                url: NP_Config.domain + "/admin/category/list",
+                data: {xmSelect: 1},
+                done: function (resp) {
+                    cateBlock = xmSelect.render({
+                        el: '#cateBlock',
+                        language: 'zn',
+                        autoRow: true,
+                        data: resp.data,
+                        toolbar: {
+                            show: true
+                        },
+                        filterable: true,
+                        paging: true,
+                        pageSize: 3
+                    });
+                }
+            })
+        });
+
+
+        var contentTable = table.render({
+            elem: '#content-table'
+            , url: NP_Config.domain + "/admin/content"
+            , size: 'lg'
+            , skin: 'row'
+            , even: true
+            , toolbar: '#contentToolbar'
+            , defaultToolbar: ['filter']
+            , cols: [[
+                {type: 'numbers', fixed: 'left'}
+                , {
+                    field: 'id', title: 'ID', width: 90, sort: true, fixed: 'left', hide: true, templet: function (d) {
+                        return '<a href="javascript:layAlert(\'' + d.id + '\')">x' + d.id.substring(d.id.length - 6, d.id.length) + '</a>';
+                    }
+                }
+                , {
+                    field: 'title', title: '标题', sort: true, fixed: 'left', width: '25%', templet: function (d) {
+                        return '<a href="' + NP_Config.domain + '/content/' + d.id + '" style="color: #01AAED;" target="_blank">' + d.title + '</a>';
+                    }
+                }
+                , {field: 'views', title: '浏览数', width: 90, sort: true}
+                , {field: 'approveCnt', title: '点赞数', width: 90, sort: true}
+                , {field: 'gmtUpdate', title: '更新时间', minWidth: 180, sort: true}
+                , {
+                    field: 'visible', title: '状态', width: 90, templet: function (d) {
+                        return d.visible ? '<span class="layui-badge-dot layui-bg-green"></span><span style="color: #009688;"> 正常</span>' :
+                            '<span class="layui-badge-dot"></span><span style="color: #FF5722;"> 已删除</span>';
+                    }
+                }
+                , {title: '标签板块', width: 300, templet: '#tagTpl', unresize: true}
+                , {title: '操作', width: 120, align: 'center', toolbar: '#contentBar', fixed: 'right'}
+            ]]
+            , where: {
+                extra: {
+                    title: $('input[name="content-title-search"]').val()
+                }
+            }
+            , initSort: {
+                field: 'gmtUpdate'
+                , type: 'desc'
+            }
+        });
+
+        //排序
+        table.on('sort(content)', function (obj) {
+            contentTable.reload({
+                initSort: obj
+                , where: {
+                    sort: obj.field
+                    , order: obj.type
+                }
+            });
+        });
+
+
+        //监听tag
+        form.on('checkbox(tagDemo)', function (obj) {
+            var cid = $(obj.elem).attr("data-cid");
+            var _name = this.name;
+            var _value = obj.elem.checked;
+            admin.req({
+                url: NP_Config.domain + "/admin/content/tagModify"
+                , type: "post"
+                , data: {
+                    cid: cid,
+                    name: _name,
+                    value: _value
+                }
+                , done: function (resp) {
+                    layer.tips(resp.message, obj.othis, {tips: 1});
+                }
+            })
+        });
+
+        //监听行工具事件
+        table.on('tool(content)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('确定删除？', function (index) {
+                    admin.req({
+                        url: NP_Config.domain + "/admin/content/delete"
+                        , type: 'post'
+                        , data: {
+                            id: data.id
+                        }
+                        , done: function (resp) {
+                            layer.close(index);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 500)
+                        }
+                    });
+
+                });
+            }
+        });
+
+        //监听搜索
+        form.on('submit(LAY-content-front-search)', function (data) {
+            var tagBlockSelect = tagBlock.getValue('value');
+            var cateBlockSelect = cateBlock.getValue('value');
+            contentTable.reload({
+                where: {
+                    extra: {
+                        title: data.field['content-title-search']
+                        , visible: data.field.visible
+                        , top: tagBlockSelect.indexOf(1) > -1 ? true : null
+                        , hot: tagBlockSelect.indexOf(2) > -1 ? true : null
+                        , recommend: tagBlockSelect.indexOf(3) > -1 ? true : null
+                    }
+                    , otherParams: {
+                        cateIds: cateBlockSelect.join(".")
+                    }
+                }
+            });
+        });
+
+
+    });
+
+    function layAlert(id) {
+        layer.alert(id)
+    }
+</script>

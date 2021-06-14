@@ -1,0 +1,227 @@
+<style>
+    #NP_home .layadmin-backlog-body p cite {
+        font-size: 25px;
+    }
+
+    div.hide-article-box {
+        width: 100%;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(70%, #fff));
+        background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0.39) 0%, #fff 70%);
+        padding-bottom: 26px;
+    }
+
+    .hide-article-pos {
+        position: relative;
+        z-index: 1998;
+        padding-top: 160px;
+        bottom: 2px;
+        margin-top: -200px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+</style>
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_home">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">快捷方式</div>
+                        <div class="layui-card-body">
+
+                            <div class="layadmin-carousel layadmin-shortcut">
+                                <ul class="layui-row layui-col-space10">
+                                    <li class="layui-col-xs6">
+                                        <a href="https://wuwenbin.me" target="_blank">
+                                            <i class="layui-icon layui-icon-website"></i>
+                                            <cite>官网首页</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs6">
+                                        <a lay-href="contents/dialog/contentadd">
+                                            <i class="layui-icon layui-icon-addition"></i>
+                                            <cite>新增内容</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs6">
+                                        <a lay-href="settings/website">
+                                            <i class="layui-icon layui-icon-set"></i>
+                                            <cite>偏好设置</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs6">
+                                        <a lay-href="/contents/notice">
+                                            <i class="layui-icon layui-icon-chat"></i>
+                                            <cite>消息中心</cite>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md9">
+                    <div class="layui-card">
+                        <div class="layui-card-header">总体概览</div>
+                        <div class="layui-card-body">
+
+                            <div class="layadmin-carousel layadmin-backlog">
+                                <ul class="layui-row layui-col-space10">
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>发表内容</h3>
+                                            <p><cite id="postCnt"><i class="fa fa-spinner fa-pulse"></i></cite> 篇</p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>注册用户</h3>
+                                            <p><cite id="regUser"><i class="fa fa-spinner fa-pulse"></i></cite> 人</p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>访问IP累计</h3>
+                                            <p><cite id="ip"><i class="fa fa-spinner fa-pulse"></i></cite> 个</p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>访问次数累计</h3>
+                                            <p><cite id="pv"><i class="fa fa-spinner fa-pulse"></i></cite> 次</p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>今日发表</h3>
+                                            <p><cite id="todayPostCnt"><i class="fa fa-spinner fa-pulse"></i></cite> 篇</p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>今日新增用户</h3>
+                                            <p><cite id="todayRegUser"><i class="fa fa-spinner fa-pulse"></i></cite> 人</p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>今日访问IP累计</h3>
+                                            <p><cite id="todayIp"><i class="fa fa-spinner fa-pulse"></i></cite> 个</p>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a class="layadmin-backlog-body">
+                                            <h3>今日访问次数累计</h3>
+                                            <p><cite id="todayPv"><i class="fa fa-spinner fa-pulse"></i></cite> 次</p>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">最新信息</div>
+                        <div class="layui-card-body">
+                            <blockquote class="layui-elem-quote">
+                                最近一次启动时间： <span id="system_started_datetime"><i class="fa fa-spinner fa-pulse"></i> loading...</span>
+                            </blockquote>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">版本/服务器信息</div>
+                <div class="layui-card-body layui-text">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>NotePress版本</td>
+                            <td>
+                                <span id="notepress-version"><i class="fa fa-spinner fa-pulse"></i> loading...</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Layui版本</td>
+                            <td>
+
+                                <span id="layui">
+                                <i class="fa fa-spinner fa-pulse"></i> loading...
+                              </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>服务器OS</td>
+                            <td>
+                                <span id="os"><i class="fa fa-spinner fa-pulse"></i> loading...
+                              </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>JDK版本</td>
+                            <td>
+
+                                <span id="jdk"><i class="fa fa-spinner fa-pulse"></i>
+                       loading...</span></td>
+                        </tr>
+                        <tr>
+                            <td>CPU信息</td>
+                            <td>
+                                <span id="cpu"><i class="fa fa-spinner fa-pulse"></i> loading...</span></td>
+                        </tr>
+                        <tr>
+                            <td>jvm最大内存</td>
+                            <td>
+                                <span id="mem"><i class="fa fa-spinner fa-pulse"></i> loading...</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    layui.use(['jquery', 'admin'], function () {
+        var admin = layui.admin,
+            $ = layui.jquery;
+        admin.req({
+            url: NP_Config.domain + "/admin/index/dashboard",
+            done: function (response) {
+                $.each(response.data, function (key, values) {
+                    $("#" + key).html(values);
+                });
+            }
+        })
+    });
+
+
+    function openPanel() {
+        $(".updatelogs").css("height", "auto");
+        $(".updatelogs").css("max-height", '');
+        $(".hide-article-box").hide();
+    }
+</script>
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正在跳转，请稍后...</title>
+    <link rel="shortcut icon" href="/notepress-admin/static/assets/image/notepress-sm.png">
+</head>
+<body>
+<h2>正在跳转，请稍后...</h2>
+<script src="/notepress-admin/static/assets/js/app.config.js"></script>
+<script src="/notepress-admin/static/plugins/jquery/jquery-1.11.3.min.js"></script>
+<script src="/notepress-admin/static/plugins/layui/layui.all.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            url: NP_Config.domain + "/admin/session/redirect2Index"
+            , type: "get"
+            , dataType: "json"
+            , crossDomain: true
+            , xhrFields: {withCredentials: true}
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , success: function (response) {
+
+                if (response.code === NP_Config.response.statusCode.logout) {
+                    location.href = "admin_index.html#/admin/login";
+                } else if (response.code === NP_Config.response.statusCode.ok) {
+                    location.href = "admin_index.html";
+                } else if (response.code === -1) {
+                    location.href = "/notepress-admin/templates/init.html";
+                } else {
+                    $("h2").text(response.message);
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

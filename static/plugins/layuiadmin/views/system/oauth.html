@@ -1,0 +1,206 @@
+<title><i class="fa fa-sign-in"></i> 第三方登录设置</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>系统管理</cite></a>
+        <a><cite>第三方登录设置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-oauth-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="oauthType" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-oauth" lay-submit lay-filter="LAY-oauth-front-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-oauth" data-type="add"><i class="fa fa-plus-square-o"></i> 添加</button>
+                <button class="layui-btn layuiadmin-btn-oauth" data-type="edit"><i class="fa fa-edit"></i> 编辑</button>
+                <button class="layui-btn layuiadmin-btn-oauth" data-type="delete" style="background-color: #FF5722;"><i class="fa fa-minus-square-o"></i> 删除</button>
+            </div>
+
+            <table id="LAY-oauth-manage" lay-filter="LAY-oauth-manage"></table>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['table', 'form', 'admin'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , form = layui.form;
+
+        form.render(null, 'layadmin-oauth-formlist');
+
+        //oauth管理
+        var oauthTable = table.render({
+            elem: '#LAY-oauth-manage'
+            , url: NP_Config.domain + '/admin/oauth'
+            , cols: [[
+                {type: 'radio', fixed: 'left'}
+                , {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'oauthType', title: '类型', minWidth: 150, sort: true}
+                , {field: 'clientId', title: 'Client ID'}
+                , {field: 'clientSecret', title: 'Client Secret'}
+                , {field: 'redirectUri', title: '跳转url'}
+                , {field: 'extraParam', title: '额外参数'}
+            ]]
+            , where: {
+                extra: {
+                    oauthType: $("input[name=oauthType]").val()
+                }
+            }
+        });
+
+        //排序
+        table.on('sort(LAY-oauth-manage)', function (obj) {
+            oauthTable.reload({
+                initSort: obj
+                , where: {
+                    sort: obj.field
+                    , order: obj.type
+                }
+            });
+        });
+
+        //监听搜索
+        form.on('submit(LAY-oauth-front-search)', function (data) {
+            table.reload('LAY-oauth-manage', {
+                where: {
+                    extra: {
+                        oauthType: data.field.oauthType
+                    }
+                }
+            });
+        });
+
+        //事件
+        var active = {
+
+            add: function () {
+
+                admin.popup({
+                    title: '添加Oauth验证'
+                    , shadeClose: false
+                    , offset: '180px'
+                    , area: ['400px', '450px']
+                    , id: 'LAY-popup-oauth-add'
+                    , success: function (layero, index) {
+                        view(this.id).render('system/dialog/oauthform', {_type: 'add'}).done(function () {
+                            form.render(null, 'layuiadmin-form-oauth');
+
+                            //监听提交
+                            form.on('submit(LAY-oauth-front-submit)', function (data) {
+                                var field = data.field; //获取提交的字段
+
+                                admin.req({
+                                    url: NP_Config.domain + "/admin/oauth/add"
+                                    , type: "post"
+                                    , data: field
+                                    , done: function (resp) {
+                                        layer.msg(resp.message);
+                                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                        layui.table.reload('LAY-oauth-manage'); //重载表格
+                                        layer.close(index); //执行关闭
+                                    }
+                                });
+                            });
+                        });
+                    }
+                });
+
+            }
+
+            , edit: function () {
+                var checkStatus = table.checkStatus('LAY-oauth-manage')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                if (checkData.length !== 1) {
+                    return layer.msg('请选中一行数据');
+                }
+
+                var dataObj = checkData[0];
+                dataObj._type = 'edit';
+                admin.popup({
+                    title: '编辑Oauth验证'
+                    , shadeClose: false
+                    , offset: '180px'
+                    , area: ['400px', '450px']
+                    , id: 'LAY-popup-oauth-add'
+                    , success: function (layero, index) {
+                        view(this.id).render('system/dialog/oauthform', dataObj).done(function () {
+                            form.render(null, 'layuiadmin-form-oauth');
+
+                            //监听提交
+                            form.on('submit(LAY-oauth-front-submit)', function (data) {
+                                var field = data.field; //获取提交的字段
+
+                                admin.req({
+                                    url: NP_Config.domain + "/admin/oauth/update"
+                                    , type: "post"
+                                    , data: field
+                                    , done: function (resp) {
+                                        layer.msg(resp.message);
+                                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                        layui.table.reload('LAY-oauth-manage'); //重载表格
+                                        layer.close(index); //执行关闭
+                                    }
+                                });
+                            });
+                        });
+                    }
+                });
+
+            }
+
+            , delete: function () {
+
+                var checkStatus = table.checkStatus('LAY-oauth-manage')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                if (checkData.length !== 1) {
+                    return layer.msg('请选中一行数据');
+                }
+
+                layer.confirm('确定删除吗？', function (i) {
+
+                    admin.req({
+                        url: NP_Config.domain + '/admin/oauth/delete'
+                        , type: "post"
+                        , data: {id: checkData[0].id}
+                        , done: function () {
+                            layer.close(i);
+                            table.reload('LAY-oauth-manage');
+                        }
+                    });
+                });
+
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-oauth').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+</script>

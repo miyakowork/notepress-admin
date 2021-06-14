@@ -1,0 +1,236 @@
+<style>
+    #NP_settings_email .layui-form-label {
+        width: 120px !important;
+    }
+</style>
+<title><i class="fa fa-server"></i> 其他服务设置</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>网站服务设置</cite></a>
+        <a><cite>其他服务设置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_settings_email">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-envelope-o"></i> 邮件服务</div>
+                <div class="layui-card-body">
+
+                    <div class="layui-form" wid100 lay-filter="mailForm">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">SMTP服务器</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="mail_smpt_server_addr" class="layui-input" value="loading..." lay-verify="required">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">如：smtp.163.com</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">SMTP端口号</label>
+                            <div class="layui-input-inline" style="width: 80px;">
+                                <input type="text" name="mail_smpt_server_port" lay-verify="number" class="layui-input" value="loading...">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">一般为 25 或 465</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">发件人邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="mail_server_account" lay-verify="email" autocomplete="off" class="layui-input" value="loading...">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">发件人账号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="mail_sender_name" value="loading..." lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱登入密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="mail_server_password" lay-verify="required" value="loading..." autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-left: 150px !important;">
+                                <button class="layui-btn" lay-submit lay-filter="set_email">确认保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-server"></i> 充值服务</div>
+                <div class="layui-card-body">
+                    <div class="layui-form" wid100 lay-filter="rechargeForm">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">充值服务器域名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="recharge_server_domain" class="layui-input" value="loading..." lay-verify="required">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">如：http://127.0.0.1:1609</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">充值兑换比率</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="recharge_rate" min="0" class="layui-input" value="loading..." lay-verify="required">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">如：10</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">充值订单密钥</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="recharge_sign_secretKey" maxlength="8" class="layui-input" value="loading..." lay-verify="required">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">监听收款APP中需要输入的密钥</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-left: 150px !important;">
+                                <button class="layui-btn" lay-submit lay-filter="set_recharge">确认保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-cloud-upload"></i> 七牛云设置</div>
+                <div class="layui-card-body">
+
+                    <div class="layui-form" lay-filter="qiniuForm">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开启七牛上传</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="upload_type" lay-skin="switch" lay-text="开启|关闭" value="qiniu">
+                            </div>
+                            <div class="layui-row layui-col-lg-offset1">
+                                <blockquote class="layui-elem-quote">
+                                    - 此处的开关只影响前台图片/文件的上传，不影响资源文件（七牛）。<br/>
+                                    - 如果需要上传/分享资源文件，请配置下面的属性保存即可。
+                                </blockquote>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">ACCESS KEY</label>
+                            <div class="layui-input-inline" style="width: 60%;">
+                                <input type="text" name="qiniu_accessKey" class="layui-input" value="loading..." lay-verify="required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">SECRET KEY</label>
+                            <div class="layui-input-inline" style="width: 60%;">
+                                <input type="text" name="qiniu_secretKey" class="layui-input" value="loading..." lay-verify="required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">BUCKET</label>
+                            <div class="layui-input-inline" style="width: 60%;">
+                                <input type="text" name="qiniu_bucket" lay-verify="required" autocomplete="off" class="layui-input" value="loading...">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">域名</label>
+                            <div class="layui-input-inline" style="width: 60%;">
+                                <input type="text" name="qiniu_domain" value="loading..." lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-left: 150px !important;">
+                                <button class="layui-btn" lay-submit lay-filter="set_qiniu">确认保存</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form'], function () {
+        var admin = layui.admin,
+            form = layui.form;
+
+        admin.req({
+            url: NP_Config.domain + "/admin/settings/email"
+            , done: function (resp) {
+                form.val("mailForm", {
+                    "mail_smpt_server_addr": resp.data.mail_smpt_server_addr || ""
+                    , "mail_smpt_server_port": resp.data.mail_smpt_server_port || ""
+                    , "mail_server_account": resp.data.mail_server_account || ""
+                    , "mail_sender_name": resp.data.mail_sender_name || ""
+                    , "mail_server_password": resp.data.mail_server_password || ""
+                });
+            }
+        });
+
+        admin.req({
+            url: NP_Config.domain + "/admin/settings/all"
+            , done: function (resp) {
+                form.val("qiniuForm", {
+                    "qiniu_accessKey": resp.data.qiniu_accessKey || ""
+                    , "qiniu_secretKey": resp.data.qiniu_secretKey || ""
+                    , "qiniu_bucket": resp.data.qiniu_bucket || ""
+                    , "qiniu_domain": resp.data.qiniu_domain || ""
+                    , "upload_type": resp.data.upload_type === "qiniu" || false
+                });
+
+                form.val('rechargeForm', {
+                    "recharge_server_domain": resp.data.recharge_server_domain || "",
+                    "recharge_rate": resp.data.recharge_rate || 0,
+                    "recharge_sign_secretKey": resp.data.recharge_sign_secretKey || ""
+                });
+            }
+        });
+
+        form.on('submit(set_email)', function (data) {
+            admin.req({
+                url: NP_Config.domain + "/admin/settings/updateEmail"
+                , type: 'post'
+                , data: data.field
+                , done: function (resp) {
+                    NotePress.showMsgRefresh(resp);
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(set_recharge)', function (data) {
+            admin.req({
+                url: NP_Config.domain + "/admin/settings/updateMap"
+                , type: 'post'
+                , data: data.field
+                , done: function (resp) {
+                    NotePress.showMsgRefresh(resp);
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(set_qiniu)', function (data) {
+            if (data.field.upload_type !== "qiniu") {
+                data.field.upload_type = "local";
+            }
+            admin.req({
+                url: NP_Config.domain + "/admin/settings/updateMap"
+                , type: 'post'
+                , data: data.field
+                , done: function (resp) {
+                    NotePress.showMsgRefresh(resp);
+                }
+            });
+            return false;
+        });
+
+    });
+</script>

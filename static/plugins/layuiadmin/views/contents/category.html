@@ -1,0 +1,239 @@
+<title><i class="fa fa-list-ol"></i> 分类管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>内容管理</cite></a>
+        <a><cite>分类管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_category">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-category-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">分类别名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="nickname" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">分类名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-category" lay-submit lay-filter="LAY-category-front-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-category" data-type="add"><i class="fa fa-plus-square-o"></i> 添加</button>
+                <button class="layui-btn layuiadmin-btn-category" data-type="edit"><i class="fa fa-edit"></i> 编辑</button>
+            </div>
+
+            <table id="LAY-category-manage" lay-filter="LAY-category-manage"></table>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['table', 'form', 'admin'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , form = layui.form;
+
+        form.render(null, 'layadmin-category-formlist');
+
+        //分类管理
+        var categoryTable = table.render({
+            elem: '#LAY-category-manage'
+            , url: NP_Config.domain + '/admin/category'
+            , cols: [[
+                {type: 'radio', fixed: 'left'}
+                , {field: 'id', width: 80, title: 'ID', sort: true}
+                , {
+                    field: 'pid', width: 80, title: '父ID', sort: true, templet: function (d) {
+                        return d.pid !== null ? d.pid : "根节点";
+                    }
+                }
+                , {field: 'nickname', title: '分类别名', sort: true}
+                , {field: 'name', title: '分类名'}
+                , {
+                    field: 'fontIcon', title: '字体图标', templet: function (d) {
+                        if (d.fontIcon !== '' && d.fontIcon !== null) {
+                            return '<b><i class="' + d.fontIcon + '" style="font-size: 24px;"></i></b>';
+                        } else {
+                            return '--';
+                        }
+                    }
+                }
+                , {
+                    field: 'imgIcon', title: '分类图标', templet: function (d) {
+                        if (d.imgIcon !== '' && d.imgIcon !== null) {
+                            return '<img class="layui-circle" style="width: 25px;height: 25px;cursor: pointer;" src="' + NP_Config.domain + d.imgIcon + '" onclick="showImg(this);">';
+                        } else {
+                            return '--';
+                        }
+                    }
+                }
+                , {
+                    field: 'status', title: "状态", templet: function (d) {
+                        return d.status ? '<label class="layui-badge layui-bg-blue">正常</label>' : '<span class="layui-badge">禁用</span>'
+                    }
+                }
+            ]]
+            , where: {
+                extra: {
+                    nickname: $("#NP_category input[name=nickname]").val(),
+                    name: $("#NP_category input[name=name]").val()
+                }
+            }
+        });
+
+        //排序
+        table.on('sort(LAY-category-manage)', function (obj) {
+            categoryTable.reload({
+                initSort: obj
+                , where: {
+                    sort: obj.field
+                    , order: obj.type
+                }
+            });
+        });
+
+        //监听搜索
+        form.on('submit(LAY-category-front-search)', function (data) {
+            table.reload('LAY-category-manage', {
+                where: {
+                    extra: {
+                        nickname: data.field.nickname,
+                        name: data.field.name
+                    }
+                }
+            });
+        });
+
+        //事件
+        var active = {
+
+            add: function () {
+
+                admin.popup({
+                    title: '添加分类'
+                    , shadeClose: false
+                    , offset: '180px'
+                    , area: ['700px', '450px']
+                    , id: 'LAY-popup-category-add'
+                    , success: function (layero, index) {
+                        var that = this;
+                        admin.req({
+                            url: NP_Config.domain + "/admin/category/list"
+                            , done: function (resp1) {
+                                view(that.id).render('contents/dialog/categoryform', {_type: 'add', _list: resp1.data}).done(function () {
+                                    form.render(null, 'layuiadmin-form-category');
+
+                                    //监听提交
+                                    form.on('submit(LAY-category-front-submit)', function (data) {
+                                        var field = data.field; //获取提交的字段
+
+                                        admin.req({
+                                            url: NP_Config.domain + "/admin/category/add"
+                                            , type: "post"
+                                            , data: field
+                                            , done: function (resp) {
+                                                layer.msg(resp.message);
+                                                layui.table.reload('LAY-category-manage'); //重载表格
+                                                layer.close(index); //执行关闭
+                                            }
+                                        });
+                                    });
+                                });
+                            }
+                        });
+
+                    }
+                });
+
+            }
+
+            , edit: function () {
+                var checkStatus = table.checkStatus('LAY-category-manage')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                if (checkData.length !== 1) {
+                    return layer.msg('请选中一行数据');
+                }
+
+                var dataObj = checkData[0];
+                dataObj._type = 'edit';
+                admin.req({
+                    url: NP_Config.domain + "/admin/category/list"
+                    , done: function (resp1) {
+                        dataObj._list = resp1.data;
+                        admin.popup({
+                            title: '编辑分类'
+                            , shadeClose: false
+                            , offset: '180px'
+                            , area: ['700px', '500px']
+                            , id: 'LAY-popup-category-add'
+                            , success: function (layero, index) {
+                                view(this.id).render('contents/dialog/categoryform', dataObj).done(function () {
+                                    form.render(null, 'layuiadmin-form-category');
+
+                                    //监听提交
+                                    form.on('submit(LAY-category-front-submit)', function (data) {
+                                        var field = data.field; //获取提交的字段
+
+                                        admin.req({
+                                            url: NP_Config.domain + "/admin/category/update"
+                                            , type: "post"
+                                            , data: field
+                                            , done: function (resp) {
+                                                layer.msg(resp.message);
+                                                layui.table.reload('LAY-category-manage'); //重载表格
+                                                layer.close(index); //执行关闭
+                                            }
+                                        });
+                                    });
+                                });
+                            }
+                        });
+                    }
+                });
+
+
+            }
+
+        };
+
+        $('.layui-btn.layuiadmin-btn-category').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+
+    function showImg(imgSrc) {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto'],
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: "<img style='width: 200px;height:200px;' src='" + $(imgSrc).attr("src") + "/'>"
+        });
+    }
+</script>

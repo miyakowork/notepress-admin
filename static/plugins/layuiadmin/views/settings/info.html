@@ -1,0 +1,295 @@
+<style>
+    #NP_user .layui-form-label {
+        width: 80px !important;
+    }
+</style>
+<title><i class="fa fa-user-o"></i> 我的资料</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>网站服务设置</cite></a>
+        <a><cite><i class="fa fa-user-o"></i> 我的资料</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_user">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">设置我的资料</div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" lay-filter="profileForm">
+                        <input type="hidden" name="id">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" value="loading..." readonly class="layui-input layui-bg-gray" disabled>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">昵称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="nickname" lay-verify="nickname" autocomplete="off" placeholder="loading..." class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="email" placeholder="loading..." lay-verify="mail" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">当前密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="oldPass" placeholder="请输入旧密码" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">填写你的旧密码以验证你的身份</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" lay-verify="pass" placeholder="请输入新密码" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">若不修改则留空</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">确认新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="repass" lay-verify="repass" placeholder="请确认新密码" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">重复上面的新密码，若不修改则留空</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">头像</label>
+                            <div class="layui-input-inline">
+                                <div id="avatarHtml">
+                                    <p style="margin-top: 8px;">loading...</p>
+                                </div>
+                                <input type="hidden" name="avatar">
+                            </div>
+                            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="LAY_avatarUpload" style="margin-top: 5px;">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">二维码</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <button type="button" class="layui-btn" id="alipay">
+                                    <i class="layui-icon">&#xe67c;</i>支付宝
+                                </button>
+                                <button type="button" class="layui-btn" id="wechat" style="margin-left: 100px;background-color: #009688;">
+                                    <i class="layui-icon">&#xe67c;</i>微信支付
+                                </button>
+                                <div id="a" style="margin-top: 15px;">
+                                    <p>loading...</p>
+                                </div>
+                                <input type="hidden" name="alipay">
+                                <input type="hidden" name="wechatPay">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-primary" lay-submit lay-filter="profile">确认修改</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['form', 'upload', 'admin'], function () {
+
+        var $ = layui.$
+            , layer = layui.layer
+            , laytpl = layui.laytpl
+            , setter = layui.setter
+            , view = layui.view
+            , admin = layui.admin
+            , form = layui.form
+            , upload = layui.upload;
+
+        var $body = $('body');
+
+        form.render();
+
+        //自定义验证
+        form.verify({
+            nickname: function (value, item) {
+                if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                    return '用户名不能有特殊字符';
+                }
+                if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                    return '用户名首尾不能出现下划线\'_\'';
+                }
+                if (/^\d+\d+\d$/.test(value)) {
+                    return '用户名不能全为数字';
+                }
+            }
+
+            , pass: function (value) {
+                if (!/^[\S]{6,12}$/.test(value) && value !== '') {
+                    return '密码必须6到12位，且不能出现空格'
+                }
+            }
+
+
+            //确认密码
+            , repass: function (value) {
+                if (value !== $('input[name=password]').val()) {
+                    return '两次密码输入不一致';
+                }
+            }
+            , mail: [
+                /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/
+                , '请输入正确的邮箱！'
+            ]
+        });
+
+        //网站设置
+        form.on('submit(profile)', function (obj) {
+            if (obj.field.password === '' || obj.field.password === null || obj.field.password === undefined) {
+                delete obj.field.password;
+            }
+            if (obj.field.oldPass !== '' && obj.field.oldPass) {
+                obj.field.oldPass = md5(obj.field.oldPass);
+            }
+            if (obj.field.password !== '' && obj.field.password) {
+                obj.field.password = md5(obj.field.password);
+            }
+            //提交修改
+            admin.req({
+                url: NP_Config.domain + '/admin/profile/update'
+                , data: obj.field
+                , type: 'post'
+                , done: function (resp) {
+                    layer.msg(resp.message);
+                    if (resp.code === NotePress.Constant.CODE_SUCCESS) {
+                        setTimeout(function () {
+                            view.exit();
+                        }, 1000);
+                    }
+                }
+            });
+            return false;
+        });
+
+        //上传头像
+        var avatarSrc = $("#avatarHtml");
+        upload.render({
+            url: NP_Config.domain + '/admin/upload'
+            , elem: '#LAY_avatarUpload'
+            , field: 'notepressFile'
+            , type: 'post'
+            , data: {
+                code: 3,
+                reqType: 'lay'
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS) {
+                    avatarSrc.html('<img src="' + NP_Config.domain + res.data.data.src + '" style="width: 70px;height: 70px;" class="layui-circle"/>');
+                    $("input[name=avatar]").val(res.data.data.src)
+                } else {
+                    layer.msg(res.message, {icon: 5});
+                }
+            }
+        });
+
+        //上传支付宝二维码
+        upload.render({
+            url: NP_Config.domain + '/admin/upload'
+            , elem: '#alipay'
+            , field: 'notepressFile'
+            , type: 'post'
+            , data: {
+                code: 4,
+                reqType: 'lay'
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS) {
+                    $("#qrcodeAlipay").attr("src", NP_Config.domain + res.data.data.src)
+                    $("input[name=alipay]").val(res.data.data.src);
+                } else {
+                    layer.msg(res.message, {icon: 5});
+                }
+            }
+        });
+
+        //上传微信二维码
+        upload.render({
+            url: NP_Config.domain + '/admin/upload'
+            , elem: '#wechat'
+            , field: 'notepressFile'
+            , type: 'post'
+            , data: {
+                code: 5,
+                reqType: 'lay'
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS) {
+                    $("#qrcodeWechatPay").attr("src", NP_Config.domain + res.data.data.src)
+                    $("input[name=wechatPay]").val(res.data.data.src);
+                } else {
+                    layer.msg(res.message, {icon: 5});
+                }
+            }
+        });
+
+        admin.req({
+            url: NP_Config.domain + "/admin/session/user"
+            , done: function (resp) {
+                var avatar = resp.data.avatar;
+                avatar = avatar.indexOf("/notepress-admin/") <= -1 ? avatar : "/notepress-admin/static/assets/image/noavatar.png";
+                form.val("profileForm", {
+                    "id": resp.data.id
+                    , "username": resp.data.username
+                    , "nickname": resp.data.nickname
+                    , "email": resp.data.email
+                    , "avatar": avatar
+                });
+                var htmlAvatar = avatar.indexOf("http") === 0 ? avatar.replace("http://", "https://") : NP_Config.domain + avatar;
+                $("#avatarHtml").html('<img src="' + htmlAvatar + '" style="width: 70px;height: 70px;border: 1px solid #cccccc;" class="layui-circle"/>');
+            }
+        });
+
+        admin.req({
+            url: NP_Config.domain + "/admin/profile/payInfo"
+            , done: function (resp) {
+                var def = '/notepress-admin/static/assets/image/noqrcode.jpg';
+                var showDef = '/static/assets/img/noqrcode.jpg';
+                if (resp.data.key1 !== '' && resp.data.key1 !== null) {
+                    $("#a").html(' <img id="qrcodeAlipay" src="' + NP_Config.domain + resp.data.key1 + '" style="width: 150px;height: 150px;"/>');
+                    $("input[name=alipay]").val(resp.data.key1);
+                } else {
+                    $("#a").html(' <img id="qrcodeAlipay" src="' + def + '" style="width: 150px;height: 150px;"/>');
+                    $("input[name=alipay]").val(showDef);
+                }
+                if (resp.data.key2 !== '' && resp.data.key2 !== null) {
+                    $("#a").append(' <img id="qrcodeWechatPay" src="' + NP_Config.domain + resp.data.key2 + '" style="width: 150px;height: 150px;margin-left: 50px;"/>');
+                    $("input[name=alipay]").val(resp.data.key2);
+                } else {
+                    $("#a").append(' <img id="qrcodeWechatPay" src="' + def + '" style="width: 150px;height: 150px;margin-left: 50px;"/>');
+                    $("input[name=wechatPay]").val(showDef);
+                }
+            }
+        })
+    });
+</script>

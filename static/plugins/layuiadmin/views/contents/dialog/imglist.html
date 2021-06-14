@@ -1,0 +1,60 @@
+<style>
+    #NP_imgList .layui-table-body .layui-table-cell {
+        height: 80px;
+    }
+</style>
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_imgList">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="NP_imgListTable" lay-filter="NP_imgList"></table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['table', 'layer'], function () {
+        var table = layui.table,
+            layer = layui.layer;
+
+        var imgListTable = table.render({
+            elem: '#NP_imgListTable'
+            , url: NP_Config.domain + '/admin/upload/imgList'
+            , skin: ''
+            , cols: [[
+                {field: 'id', width: '60', title: 'ID', sort: true}
+                , {
+                    field: 'virtualPath', title: '图片', width: 200, align: 'center', style: 'height:100px;', templet: function (d) {
+                        return '<a href="' + NP_Config.domain + d.virtualPath + '" target="_blank">' +
+                            '<img src="' + NP_Config.domain + d.virtualPath + '" style="max-width: 120px;height: 80px;"/>' +
+                            '</a> ';
+                    }
+                }
+                , {field: 'contentType', title: 'Mime类型', minWidth: 120}
+                , {field: 'gmtCreate', title: '上传时间', sort: true, minWidth: 180}
+                , {
+                    field: '', title: '操作', fixed: 'right', width: 100, templet: function (d) {
+                        var imgSrc = d.virtualPath;
+                        return '<button class="layui-btn layui-btn-sm" onclick="chooseForCover(this);" data-url="' + imgSrc + '"><i class="fa fa-check-square-o"></i> 选择</button>';
+                    }
+                }
+            ]]
+            , initSort: {
+                field: 'gmtCreate'
+                , type: 'desc'
+            }
+            , where: {
+                sort: 'gmt_create',
+                order: 'desc',
+                extra: {
+                    contentType: ''
+                }
+            }
+        });
+    });
+
+    function chooseForCover(img) {
+        var a = $(img).attr("data-url");
+        parent.$("#cover").val(a);
+        parent.$("#coverEdit").val(a);
+        layer.close(layer.index);
+    }
+</script>

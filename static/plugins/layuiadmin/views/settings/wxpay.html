@@ -1,0 +1,200 @@
+<title><i class="fa fa-list-alt"></i> 微信付款码</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>网站服务设置</cite></a>
+        <a><cite>微信付款码管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_wxpay">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-wxpay-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">价格</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="qrPrice" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-category" lay-submit lay-filter="LAY-wxpay-front-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-category" data-type="add"><i class="fa fa-plus-square-o"></i> 添加</button>
+            </div>
+
+            <table id="LAY-wxpay-manage" lay-filter="LAY-wxpay-manage"></table>
+
+        </div>
+    </div>
+</div>
+<script type="text/html" id="showQrCode">
+    <a class="layui-btn layui-btn-xs" lay-event="testQrCode">测试二维码</a>
+    <a class="layui-btn layui-btn-xs layui-bg-red" lay-event="delete">删除</a>
+</script>
+<script>
+    layui.use(['table', 'form', 'admin'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , form = layui.form;
+
+        form.render(null, 'layadmin-wxpay-formlist');
+
+        //分类管理
+        var wxpayTable = table.render({
+            elem: '#LAY-wxpay-manage'
+            , url: NP_Config.domain + '/admin/wxpay'
+            , cols: [[
+                {type: 'radio', fixed: 'left'}
+                , {type: 'numbers', title: '序号', width: 50}
+                , {field: 'qrUrl', title: '微信付款码url', edit: 'text'}
+                , {field: 'id', hide: true}
+                , {field: 'qrPrice', title: '价格', edit: 'text', sort: true}
+                , {fixed: 'right', width: 200, align: 'center', toolbar: '#showQrCode'}
+            ]]
+            , where: {
+                extra: {
+                    qrPrice: $("input[name=qrPrice]").val()
+                }
+            }
+        });
+
+        //排序
+        table.on('sort(LAY-wxpay-manage)', function (obj) {
+            wxpayTable.reload({
+                initSort: obj
+                , where: {
+                    sort: obj.field
+                    , order: obj.type
+                }
+            });
+        });
+
+        //监听单元格编辑
+        table.on('edit(LAY-wxpay-manage)', function (obj) {
+            var data = obj.data;
+            var param = {};
+            if (obj.field === "qrUrl") {
+                param = {
+                    id: data.id,
+                    qrUrl: data.qrUrl
+                };
+            }
+            if (obj.field === "qrPrice") {
+                param = {
+                    id: data.id,
+                    qrPrice: data.qrPrice
+                };
+            }
+            admin.req({
+                url: NP_Config.domain + "/admin/wxpay/update",
+                type: "post",
+                data: param,
+                done: function (success) {
+                    layer.msg(success.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 666);
+                }
+            })
+        });
+
+        //监听搜索
+        form.on('submit(LAY-wxpay-front-search)', function (data) {
+            table.reload('LAY-wxpay-manage', {
+                where: {
+                    extra: {
+                        qrPrice: data.field.qrPrice
+                    }
+                }
+            });
+        });
+
+        //监听工具条
+        table.on('tool(LAY-wxpay-manage)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+
+            if (layEvent === 'testQrCode') { //查看
+                window.open(NP_Config.domain + "/wxpay/testQrCode?url=" + data.qrUrl, "_blank");
+            } else if (layEvent === 'delete') { //删除
+                layer.confirm('确定删除么？', function (index) {
+                    layer.close(index);
+                    admin.req({
+                        type: "post"
+                        , url: NP_Config.domain + "/admin/wxpay/delete"
+                        , data: {
+                            id: data.id
+                        }
+                        , done: function (resp) {
+                            if (resp.code === NotePress.Constant.CODE_SUCCESS) {
+                                obj.del();
+                            }
+                            layer.msg(resp.message);
+                        }
+                    })
+                });
+            }
+        });
+
+        //事件
+        var active = {
+
+            add: function () {
+
+                admin.popup({
+                    title: '添加微信付款码'
+                    , shadeClose: false
+                    , offset: '180px'
+                    , area: ['620px', '280px']
+                    , id: 'LAY-popup-wxpay-add'
+                    , success: function (layero, index) {
+                        var that = this;
+                        view(that.id).render('settings/dialog/wxpayform', {}).done(function () {
+                            form.render(null, 'layuiadmin-form-wxpay');
+                            //监听提交
+                            form.on('submit(LAY-wxpay-front-submit)', function (data) {
+                                var field = data.field; //获取提交的字段
+
+                                admin.req({
+                                    url: NP_Config.domain + "/admin/wxpay/add"
+                                    , type: "post"
+                                    , data: field
+                                    , done: function (resp) {
+                                        layer.msg(resp.message);
+                                        layui.table.reload('LAY-wxpay-manage'); //重载表格
+                                        layer.close(index); //执行关闭
+                                    }
+                                });
+                            });
+                        });
+
+
+                    }
+                });
+
+            }
+
+        };
+
+        $('.layui-btn.layuiadmin-btn-category').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+
+</script>

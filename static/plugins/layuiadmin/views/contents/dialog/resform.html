@@ -1,0 +1,162 @@
+<div id="NP_resform" class="layui-form" lay-filter="layuiadmin-form-res" style="padding: 20px 0 0 0;">
+
+    <div class="layui-form-item">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-xs2">
+                <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">添加文件</button>
+            </div>
+            <div class="layui-col-xs6">
+                <div id="rescateBlock"></div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-upload-list">
+                <table class="layui-table" lay-size="sm">
+                    <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="demoList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-col-xs2">
+            <label class="layui-form-label">硬币</label>
+        </div>
+        <div class="layui-col-xs2">
+            <input type="number" min="0" name="coinVal" class="layui-input" placeholder="硬币数量">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-col-xs2">
+            <label class="layui-form-label">授权码</label>
+        </div>
+        <div class="layui-col-xs2">
+            <input type="text" name="authCode" class="layui-input" placeholder="授权码">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-col-xs2">
+            <label class="layui-form-label">简介链接</label>
+        </div>
+        <div class="layui-col-xs8">
+            <input type="url" name="resIntroUrl" class="layui-input" placeholder="资源简介url">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-col-xs-offset2">
+        <button id="qiniuSub" value="确认" class="layui-btn" style="width: 150px;">上传文件</button>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    layui.use(['jquery', 'admin', 'upload'], function () {
+        var $ = layui.jquery,
+            upload = layui.upload,
+            admin = layui.admin;
+
+        var demoListView = $('#demoList'),
+            //上传
+            uploadListIns = upload.render({
+                elem: '#layuiadmin-upload-useradmin'
+                , url: NP_Config.domain + '/admin/res/upload'
+                , method: 'post'
+                , accept: 'file'
+                , exts: 'zip|rar|7z|jpg|png|gif|jpeg|bmp'
+                , multiple: false
+                , auto: false
+                , bindAction: '#qiniuSub'
+                // , number: 5
+                , size: 20 * 1024
+                , headers: {
+                    access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+                }
+                , data: {
+                    cateIdsStr: function () {
+                        return window._selectedResCateIds ? window._selectedResCateIds : ''
+                    },
+                    coin: function () {
+                        return $("input[name=coinVal]").val();
+                    }
+                    , resIntroUrl: function () {
+                        return $("input[name=resIntroUrl]").val();
+                    }
+                    , authCode: function () {
+                        return $("input[name=authCode]").val();
+                    }
+                }
+                , field: 'qiniu-res-file'
+                , choose: function (obj) {
+                    var files = window._uploads_files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                    //读取本地文件
+                    obj.preview(function (index, file, result) {
+                        var s = file.size / 1024 / 1024;
+                        s = s < 1 ? ((file.size / 1024) < 1) ? (file.size + "B") : (((file.size / 1024).toFixed(2)) + "KB") : (s.toFixed(2) + "MB");
+                        var tr = $(['<tr id="upload-' + index + '">'
+                            , '<td style="max-width:200px;" class="layui-elip">' + file.name + '</td>'
+                            , '<td>' + s + '</td>'
+                            , '<td>等待上传</td>'
+                            , '<td>'
+                            , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                            , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                            , '</td>'
+                            , '</tr>'].join(''));
+
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function () {
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function () {
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+
+                        demoListView.append(tr);
+                    });
+                }
+                , done: function (res, index, upload) {
+                    if (res.code === 200) {
+                        var tr = demoListView.find('tr#upload-' + index)
+                            , tds = tr.children();
+                        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                        tds.eq(3).html(''); //清空操作
+                        delete this.files[index]; //删除文件队列已经上传成功的文件
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500);
+                        $("#qiniuSub").remove();
+                        return true;
+                    } else {
+                        layer.msg(res.message);
+                        this.error(index, upload);
+                    }
+                }
+                , error: function (index, upload) {
+                    var tr = demoListView.find('tr#upload-' + index)
+                        , tds = tr.children();
+                    tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                    tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                }
+            });
+
+        var clicked = false;
+        $("#qiniuSub").click(function () {
+            clicked = true;
+            $("#qiniuSub").remove();
+        })
+
+    });
+</script>

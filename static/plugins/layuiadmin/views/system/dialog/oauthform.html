@@ -1,0 +1,62 @@
+<style>
+    #NP_categoryform .layui-form-label {
+        width: 80px !important;
+    }
+
+    #NP_categoryform .layui-form-item .layui-input-inline {
+        width: 230px !important;
+    }
+</style>
+<div id="NP_categoryform" class="layui-form" lay-filter="layuiadmin-form-oauth" style="padding: 20px 0 0 0;">
+    <script type="text/html" template>
+        {{#  if(d.params._type === 'edit'){ }}
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="required" readonly>
+        {{#  } }}
+    </script>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="oauthType" value="{{ d.params.oauthType || '' }}" lay-verify="required" placeholder="请输入类型" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">id</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="clientId" value="{{ d.params.clientId || '' }}" lay-verify="required" placeholder="请输入clientId" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">secret / key</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="clientSecret" value="{{ d.params.clientSecret || '' }}" lay-verify="required" placeholder="请输入clientSecret" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">跳转URI</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="redirectUri" value="{{ d.params.redirectUri || '' }}" lay-verify="required" placeholder="请输入跳转uri" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">额外参数</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="extraParam" value="{{ d.params.extraParam || '' }}" lay-verify="required" placeholder="没有则留空" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-oauth-front-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>

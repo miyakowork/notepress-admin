@@ -1,0 +1,469 @@
+<style>
+    #NP_settings_website .layui-col-md4 .layui-form-label {
+        width: 160px !important;
+    }
+
+    #NP_settings_website .layui-col-md8 .layui-form-label {
+        width: 120px !important;
+    }
+
+
+    #NP_settings_website .layui-col-md4 .layui-input-block {
+        margin-left: 190px !important;
+    }
+
+    #NP_settings_website .layui-col-md8 .layui-input-block {
+        margin-left: 150px !important;
+    }
+
+    #NP_settings_website .layui-form-checked[lay-skin=primary] i {
+        border-color: #1164ff !important;
+    }
+
+    #NP_settings_website .layui-form-checked span, .layui-form-checked:hover span {
+        background: inherit !important;
+    }
+</style>
+<title><i class="fa fa-sitemap"></i> 偏好设置</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>网站服务设置</cite></a>
+        <a><cite><i class="fa fa-sitemap"></i> 偏好设置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="NP_settings_website">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-toggle-off"></i> <b>开关设置</b></div>
+                <div class="layui-card-body" pad15>
+                    <div class="layui-form" lay-filter="switchForm">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开启全站评论
+                                <b><i class="layui-icon layui-icon-about" lay-tips="控制所有类型页面的评论功能，优先级高于单独设置的"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_comment" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开启主站上传功能
+                                <b><i class="layui-icon layui-icon-about" lay-tips="前台主站的用户上传功能，后台的不在此控制范围之内"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_upload" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文件上传类型
+                                <b><i class="layui-icon layui-icon-about" lay-tips="前台主站的用户上传功能，后台的不在此控制范围之内。
+                                具体的格式如下：<br/>图片：jpg／jpeg／png／gif／bmp／svg
+                                <br/>压缩文件：zip／rar／7z／iso
+                                <br/>脚本：exe／sh／bat
+                                <br/>文本文件：txt／doc(x)／ppt(x)／xls(x)／csv
+                                <br/>音视频：mp3／wav／flac／mp4／mkv"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="upload_exts[pic]" title="图片" lay-skin="primary" value="jpg|png|jpeg|bmp|gif|svg|" lay-filter="uploadSwitchFilter">
+                                <input type="checkbox" name="upload_exts[zip]" title="压缩文件" lay-skin="primary" value="zip|rar|7z|iso|" lay-filter="uploadSwitchFilter">
+                                <input type="checkbox" name="upload_exts[bat]" title="脚本" lay-skin="primary" value="exe|sh|bat|" lay-filter="uploadSwitchFilter">
+                                <input type="checkbox" name="upload_exts[txt]" title="文本文件" lay-skin="primary" value="txt|doc(x)|ppt(x)|xls(x)|csv|" lay-filter="uploadSwitchFilter">
+                                <input type="checkbox" name="upload_exts[video]" title="视频" lay-skin="primary" value="mp3|wav|flac|mp4|mkv|" lay-filter="uploadSwitchFilter">
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开启评论通知邮件
+                                <b><i class="layui-icon layui-icon-about" lay-tips="邮件服务设置需要设置完善之后此功能才有效"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_comment_notice_mail" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开放用户注册
+                                <b><i class="layui-icon layui-icon-about" lay-tips="开放注册的同时需要设置好邮件服务，注册功能才有效"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_user_reg" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开启访问统计
+                                <b><i class="layui-icon layui-icon-about" lay-tips="开启统计功能，则会统计访问【文章/内容】页面的【PV/IP】量，以及其他的页面统计"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_visit_log" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">统计类型
+                                <b><i class="layui-icon layui-icon-about" lay-tips="前台主站的用户上传功能，后台一般不做统计"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="statistics_method[content]" title="文章页面" lay-skin="primary" value="content|" lay-filter="staticSwitchFilter">
+                                <input type="checkbox" name="statistics_method[home_index]" title="首页/列表" lay-skin="primary" value="home_index|" lay-filter="staticSwitchFilter">
+                                <input type="checkbox" name="statistics_method[other]" title="其他页面" lay-skin="primary" value="other|" lay-filter="staticSwitchFilter">
+                                <input type="checkbox" name="statistics_method[admin]" title="后台API" lay-skin="primary" value="admin|" lay-filter="staticSwitchFilter">
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开启QQ登录
+                                <b><i class="layui-icon layui-icon-about" lay-tips="开启qq登录同时必须设置好相关qq登录的参数哦，此处仅仅作为功能开关"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_qq_login" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开启GITHUB登录
+                                <b><i class="layui-icon layui-icon-about" lay-tips="开启github登录时必须设置好相关github登录的参数哦，此处仅仅作为功能开关"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_github_login" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" id="recharge">
+                            <label class="layui-form-label">是否开启自动充值服务
+                                <b><i class="layui-icon layui-icon-about" lay-tips="开启则启用自动充值功能，关闭则使用扫码手动确认！<br/>服务端jar包需要额外购买，详情咨询QQ:765934806<br/>注：必须要启动充值微服务端才有效哦！"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_recharge_server" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否直接进入网站首页
+                                <b><i class="layui-icon layui-icon-about" lay-tips="开启则直接进入index首页，略过卡片欢迎页。"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_homepage_index" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md8">
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-file-o"></i> <b>其他设置</b></div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" wid100 lay-filter="textFrom">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">网站名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="website_name" class="layui-input" placeholder="loading...">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">网站副标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="website_subtitle" placeholder="一句简短的话" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">LOGO (小)</label>
+                            <div class="layui-input-inline" style="width: 250px;">
+                                <input name="website_logo_small" id="website_logo_small" placeholder="一般为正方形 x*x" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                                <button type="button" class="layui-btn layui-btn-primary" id="website_logo_small_btn">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                                <button class="layui-btn layui-btn-primary" layadmin-event="logoPreview1">查看图片</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">LOGO (大)</label>
+                            <div class="layui-input-inline" style="width: 250px;">
+                                <input name="website_logo_large" id="website_logo_large" placeholder="一般为矩形 x*y" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                                <button type="button" class="layui-btn layui-btn-primary" id="website_logo_large_btn">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                                <button class="layui-btn layui-btn-primary" layadmin-event="logoPreview2">查看图片</button>
+                            </div>
+                        </div>
+                        <!--                        <div class="layui-form-item">-->
+                        <!--                            <label class="layui-form-label">LOGO (字体图标)</label>-->
+                        <!--                            <div class="layui-input-inline" style="width: 250px;">-->
+                        <!--                                <input name="website_logo_fonticon" placeholder="例：fa fa-xxx，xxx为字体图标的类名" class="layui-input">-->
+                        <!--                            </div>-->
+                        <!--                            <div class="layui-input-inline" style="width: auto;padding-top: 7px;">-->
+                        <!--                                <a href="http://fontawesome.dashgame.com/" target="_blank" style="color: #1E9FFF;">查看字体图标</a>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">最大文件上传</label>
+                            <div class="layui-input-inline" style="width: 80px;">
+                                <input name="upload_max_size" type="number" placeholder="loading..." class="layui-input" max="102400" min="1">
+                            </div>
+                            <div class="layui-input-inline layui-input-company">KB</div>
+                            <div class="layui-form-mid layui-word-aux">提示：1 M = 1024 KB，不得大于100 MB（102,400 KB）</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">每页显示内容数量</label>
+                            <div class="layui-input-inline" style="width: 80px;">
+                                <input type="number" name="content_page_size" placeholder="请输入数字" autocomplete="off" class="layui-input" min="0" max="100">
+                            </div>
+
+                        </div>
+
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">网站/个人简介</label>
+                            <div class="layui-input-block">
+                                <textarea name="website_info_label" class="layui-textarea" style="min-height: 233px;" placeholder="一般适合展示站长的个人一些简单信息或网站的一些基本信息，此处可以使用HTML代码"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">META关键词</label>
+                            <div class="layui-input-block">
+                                <input name="seo_keywords" class="layui-input" placeholder="多个关键词用英文状态 , 号分割，SEO设置利于搜索引擎爬取"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">META描述</label>
+                            <div class="layui-input-block">
+                                <textarea name="seo_description" class="layui-textarea" placeholder="SEO设置，利于搜索引擎爬取"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">页脚文本</label>
+                            <div class="layui-input-block">
+                                <textarea name="footer_copyright" class="layui-textarea" placeholder="一般是放置版权和备案信息"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="set_website">确认保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form', 'upload'], function () {
+        var admin = layui.admin,
+            view = layui.view,
+            upload = layui.upload,
+            form = layui.form;
+
+        form.render();
+
+        admin.req({
+            url: NP_Config.domain + "/admin/settings/all"
+            , done: function (resp) {
+                form.val('textFrom', {
+                    "website_name": resp.data.website_name || ""
+                    , "website_subtitle": resp.data.website_subtitle || ""
+                    , "website_logo_small": resp.data.website_logo_small || ""
+                    , "website_logo_large": resp.data.website_logo_large || ""
+                    , "website_logo_fonticon": resp.data.website_logo_fonticon || ""
+                    , "upload_max_size": resp.data.upload_max_size || ""
+                    , "website_info_label": resp.data.website_info_label || ""
+                    , "seo_keywords": resp.data.seo_keywords || ""
+                    , "seo_description": resp.data.seo_description || ""
+                    , "footer_copyright": resp.data.footer_copyright || ""
+                    , "content_page_size": resp.data.content_page_size || 0
+
+                });
+
+                if (resp.data.recharge_server_domain === null || resp.data.recharge_server_domain === "") {
+                    $("#recharge").hide();
+                }
+                form.val('switchForm', {
+                    "switch_comment": resp.data.switch_comment === "1" || false
+                    , "switch_upload": resp.data.switch_upload === "1" || false
+                    , "upload_exts[pic]": resp.data.upload_exts.indexOf('jpg|png|jpeg|bmp|gif|svg|') > -1 || false
+                    , "upload_exts[zip]": resp.data.upload_exts.indexOf('zip|rar|7z|iso|') > -1 || false
+                    , "upload_exts[txt]": resp.data.upload_exts.indexOf('txt|doc(x)|ppt(x)|xls(x)|csv|') > -1 || false
+                    , "upload_exts[bat]": resp.data.upload_exts.indexOf('exe|sh|bat|') > -1 || false
+                    , "upload_exts[video]": resp.data.upload_exts.indexOf('mp4|mkv|') > -1 || false
+                    , "switch_comment_notice_mail": resp.data.switch_comment_notice_mail === "1" || false
+                    , "switch_user_reg": resp.data.switch_user_reg === "1" || false
+                    , "switch_visit_log": resp.data.switch_visit_log === "1" || false
+                    , "statistics_method[content]": resp.data.statistics_method.indexOf('content') > -1 || false
+                    , "statistics_method[home_index]": resp.data.statistics_method.indexOf('home_index') > -1 || false
+                    , "statistics_method[other]": resp.data.statistics_method.indexOf('other') > -1 || false
+                    , "statistics_method[admin]": resp.data.statistics_method.indexOf('admin') > -1 || false
+                    , "switch_qq_login": resp.data.switch_qq_login === "1" || false
+                    , "switch_github_login": resp.data.switch_github_login === "1" || false
+                    , "switch_recharge_server": resp.data.switch_recharge_server === "1" || false
+                    , "switch_homepage_index": resp.data.switch_homepage_index === "1" || false
+                })
+            }
+
+        });
+
+        form.on('switch(switchFilter)', function (data) {
+            admin.req({
+                url: NP_Config.domain + "/admin/settings/update"
+                , type: 'post'
+                , data: {
+                    name: data.elem.name
+                    , value: data.elem.checked ? 1 : 0
+                }
+                , done: function (resp) {
+                    layer.msg(resp.message);
+                }
+            });
+        });
+
+
+        form.on('submit(set_website)', function (data) {
+            admin.req({
+                url: NP_Config.domain + "/admin/settings/updateMap"
+                , type: 'post'
+                , data: data.field
+                , done: function (resp) {
+                    layer.msg(resp.message);
+                }
+            });
+            return false;
+        });
+
+        form.on('checkbox(uploadSwitchFilter)', function (data) {
+            var pic = $("input[name='upload_exts[pic]']").is(':checked') ? $("input[name='upload_exts[pic]']").val() : '';
+            var zip = $("input[name='upload_exts[zip]']").is(':checked') ? $("input[name='upload_exts[zip]']").val() : '';
+            var bat = $("input[name='upload_exts[bat]']").is(':checked') ? $("input[name='upload_exts[bat]']").val() : '';
+            var txt = $("input[name='upload_exts[txt]']").is(':checked') ? $("input[name='upload_exts[txt]']").val() : '';
+            var video = $("input[name='upload_exts[video]']").is(':checked') ? $("input[name='upload_exts[video]']").val() : '';
+            var exts = pic + zip + bat + txt + video;
+            admin.req({
+                url: NP_Config.domain + "/admin/settings/update"
+                , type: 'post'
+                , data: {
+                    name: 'upload_exts'
+                    , value: exts
+                }
+                , done: function (resp) {
+                    layer.msg(resp.message);
+                }
+            });
+        });
+
+        form.on('checkbox(staticSwitchFilter)', function (data) {
+            var content = $("input[name='statistics_method[content]']").is(':checked') ? $("input[name='statistics_method[content]']").val() : '';
+            var home_index = $("input[name='statistics_method[home_index]']").is(':checked') ? $("input[name='statistics_method[home_index]']").val() : '';
+            var other = $("input[name='statistics_method[other]']").is(':checked') ? $("input[name='statistics_method[other]']").val() : '';
+            var admins = $("input[name='statistics_method[admin]']").is(':checked') ? $("input[name='statistics_method[admin]']").val() : '';
+            var methods = content + home_index + other + admins;
+            admin.req({
+                url: NP_Config.domain + "/admin/settings/update"
+                , type: 'post'
+                , data: {
+                    name: 'statistics_method'
+                    , value: methods
+                }
+                , done: function (resp) {
+                    layer.msg(resp.message);
+                }
+            });
+        });
+
+
+        //上传logo
+        var logoS = $('#website_logo_small');
+        var logoL = $('#website_logo_large');
+        upload.render({
+            url: NP_Config.domain + '/admin/upload/'
+            , elem: '#website_logo_small_btn'
+            , field: 'notepressFile'
+            , data: {
+                reqType: 'lay',
+                code: 6
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS && res.data.code === 0) {
+                    logoS.val(NP_Config.domain + res.data.data.src);
+                } else {
+                    layer.msg(res.message || res.data.msg, {icon: 5});
+                }
+            }
+        });
+
+        upload.render({
+            url: NP_Config.domain + '/admin/upload/'
+            , elem: '#website_logo_large_btn'
+            , field: 'notepressFile'
+            , data: {
+                reqType: 'lay',
+                code: 6
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS && res.data.code === 0) {
+                    logoL.val(NP_Config.domain + res.data.data.src);
+                } else {
+                    layer.msg(res.message || res.data.msg, {icon: 5});
+                }
+            }
+        });
+
+        //查看头像
+        admin.events.logoPreview1 = function (othis) {
+            var src = logoS.val();
+            layer.photos({
+                photos: {
+                    "title": "查看头像" //相册标题
+                    , "data": [{
+                        "src": src //原图地址
+                    }]
+                }
+                , shade: 0.01
+                , closeBtn: 1
+                , anim: 5
+            });
+        };
+
+        admin.events.logoPreview2 = function (othis) {
+            var src = logoL.val();
+            layer.photos({
+                photos: {
+                    "title": "查看头像" //相册标题
+                    , "data": [{
+                        "src": src //原图地址
+                    }]
+                }
+                , shade: 0.01
+                , closeBtn: 1
+                , anim: 5
+            });
+        };
+
+
+    });
+</script>

@@ -1,0 +1,58 @@
+<style>
+    #NP_resform3 .layui-form-label {
+        width: 80px !important;
+    }
+
+</style>
+<div id="NP_resform3" class="layui-form" lay-filter="layuiadmin-form-res3" style="padding: 20px 0 0 0;">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">文件名</label>
+        <div class="layui-input-inline" style="width: 250px;">
+            <input type="text" name="resHash" lay-verify="required" placeholder="请输入文件显示名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">文件分类</label>
+        <div class="layui-input-inline">
+            <div id="rescateBlock3"></div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">下载地址</label>
+        <div class="layui-input-inline" style="width: 350px;">
+            <input type="text" name="resUrl" lay-verify="required" placeholder="请输入下载地址" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">简介链接</label>
+        <div class="layui-input-inline" style="width: 350px;">
+            <input type="text" name="resIntroUrl" placeholder="请输入简介URL地址" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">硬币</label>
+        <div class="layui-input-inline" style="width: 150px;">
+            <input type="number" min="0" name="coin" placeholder="硬币数量" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">授权码</label>
+        <div class="layui-input-inline" style="width: 150px;">
+            <input type="text" name="authCode" placeholder="授权码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-res3-front-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>

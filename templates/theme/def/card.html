@@ -1,0 +1,636 @@
+<style>
+    #LAY-settings-profile .layui-form-label {
+        width: 80% !important;
+    }
+
+    #LAY-settings-profile .layui-form-item {
+        margin-bottom: 5px !important;
+    }
+</style>
+
+<title><i class="fa fa-credit-card"></i> 卡片设置</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>主题设置</cite></a>
+        <a><cite>首页卡片设置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid layui-anim layui-anim-upbit" id="LAY-settings-profile">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md12">
+
+
+            <div class="layui-card">
+                <div class="layui-card-header">卡片设置</div>
+                <div class="layui-card-body">
+
+                    <div class="layui-tab layui-tab-brief" lay-filter="cardTab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">卡片1</li>
+                            <li>卡片2</li>
+                            <li>卡片3</li>
+                            <li>卡片4</li>
+                            <li>
+                                <button class="layui-btn layui-btn-sm" lay-submit
+                                        lay-filter="card">更新卡片设置
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-form layui-show card01" lay-filter="card01">
+
+                                <input type="hidden" name="cardNo" value="card01">
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片1是否展示</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="checkbox" name="show" lay-skin="switch" lay-text="显示|隐藏" value="true">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片链接地址</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="url" name="url" placeholder="请输入URL地址" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">头部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="headerHtml" placeholder="请输入文本，不宜过多文字" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片LOGO图片</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="logoImgSrc">
+                                            <p id="card01-logo"
+                                               style="cursor: pointer;border: 1px solid #eee;width: 80px;height: 80px;">
+                                                <img style="width: 100%;" src=""/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">LOGO图片形状</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="radio" name="shape" lay-filter="shape" value="1"
+                                                   title="方形">
+                                            <input type="radio" name="shape" lay-filter="shape" value="0"
+                                                   title="圆形">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容标题</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardTitle" placeholder="请输入文本，不宜过多文字" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容简述</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardDesc" placeholder="请输入文本，不宜过多文字" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容项目</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="itemTexts">
+                                            <textarea name="itemTexts"
+                                                      placeholder="每个项目一行，回车换行，每行卡片的描述项目最好一致以达到卡片高度一致的美观效果，条目最多5~6个较为美观"
+                                                      autocomplete="off" style="min-height: 200px;"
+                                                      class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片底部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input name="footerText"
+                                                   placeholder="卡片的底部文本" autocomplete="off"
+                                                   class="layui-input"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="layui-tab-item layui-form card02" lay-filter="card02">
+
+                                <input type="hidden" name="cardNo" value="card02">
+
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片2是否展示</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="checkbox" name="show" lay-skin="switch" lay-text="显示|隐藏" value="true">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片链接地址</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="url" name="url" placeholder="请输入URL地址" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">头部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="headerHtml" placeholder="请输入文本，不宜过多文字" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片LOGO图片</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="logoImgSrc">
+                                            <p id="card02-logo"
+                                               style="cursor: pointer;border: 1px solid #eee;width: 80px;height: 80px;">
+                                                <img style="width: 100%;" src=""/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">LOGO图片形状</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="radio" name="shape" lay-filter="shape" value="1"
+                                                   title="方形">
+                                            <input type="radio" name="shape" lay-filter="shape" value="0"
+                                                   title="圆形">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容标题</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardTitle" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容简述</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardDesc" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容项目</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="itemTexts">
+                                            <textarea name="itemTexts"
+                                                      placeholder="每个项目一行，回车换行，每行卡片的描述项目最好一致以达到卡片高度一致的美观效果，条目最多5~6个较为美观"
+                                                      autocomplete="off" style="min-height: 200px;"
+                                                      class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片底部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input name="footerText"
+                                                   placeholder="卡片的底部文本" autocomplete="off"
+                                                   class="layui-input"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="layui-tab-item layui-form card03" lay-filter="card03">
+
+                                <input type="hidden" name="cardNo" value="card03">
+
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片3是否展示</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="checkbox" name="show" lay-skin="switch" lay-text="显示|隐藏" value="true">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片链接地址</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="url" name="url" placeholder="请输入URL地址"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">头部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="headerHtml" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片LOGO图片</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="logoImgSrc">
+                                            <p id="card03-logo"
+                                               style="cursor: pointer;border: 1px solid #eee;width: 80px;height: 80px;">
+                                                <img style="width: 100%;" src=""/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">LOGO图片形状</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="radio" name="shape" lay-filter="shape" value="1"
+                                                   title="方形">
+                                            <input type="radio" name="shape" lay-filter="shape" value="0"
+                                                   title="圆形">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容标题</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardTitle" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容简述</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardDesc" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容项目</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="itemTexts">
+                                            <textarea name="itemTexts"
+                                                      placeholder="每个项目一行，回车换行，每行卡片的描述项目最好一致以达到卡片高度一致的美观效果，条目最多5~6个较为美观"
+                                                      autocomplete="off" style="min-height: 200px;"
+                                                      class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片底部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input name="footerText"
+                                                   placeholder="卡片的底部文本" autocomplete="off"
+                                                   class="layui-input"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="layui-tab-item layui-form card04" lay-filter="card04">
+
+                                <input type="hidden" name="cardNo" value="card04">
+
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片4是否展示</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="checkbox" name="show" lay-skin="switch" lay-text="显示|隐藏" value="true">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片链接地址</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="url" name="url" placeholder="请输入URL地址"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">头部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="headerHtml" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片LOGO图片</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="logoImgSrc">
+                                            <p id="card04-logo"
+                                               style="cursor: pointer;border: 1px solid #eee;width: 80px;height: 80px;">
+                                                <img style="width: 100%;" src=""/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">LOGO图片形状</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="radio" name="shape" lay-filter="shape" value="1"
+                                                   title="方形">
+                                            <input type="radio" name="shape" lay-filter="shape" value="0"
+                                                   title="圆形">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容标题</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardTitle" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容简述</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="text" name="cardDesc" placeholder="请输入文本，不宜过多文字"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片内容项目</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input type="hidden" name="itemTexts">
+                                            <textarea name="itemTexts"
+                                                      placeholder="每个项目一行，回车换行，每行卡片的描述项目最好一致以达到卡片高度一致的美观效果，条目最多5~6个较为美观"
+                                                      autocomplete="off" style="min-height: 200px;"
+                                                      class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs3 layui-col-sm2">
+                                            <label class="layui-form-label">卡片底部文本</label>
+                                        </div>
+                                        <div class="layui-col-xs9 layui-col-sm10">
+                                            <input name="footerText"
+                                                   placeholder="卡片的底部文本" autocomplete="off"
+                                                   class="layui-input"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['element', 'form', 'upload', 'admin'], function () {
+        var form = layui.form,
+            element = layui.element,
+            admin = layui.admin,
+            upload = layui.upload;
+
+        element.render();
+        form.render();
+
+        form.on('submit(card)', function (data) {
+            var reqData = [];
+            for (var i = 1; i <= 4; i++) {
+                var filter = "card0" + i;
+                var _data = form.val(filter);
+                _data.show = _data.show || false;
+                _data.shape = _data.shape || 0;
+                reqData.push(_data);
+            }
+            var reqObj = {"wel_card": reqData};
+            admin.req({
+                url: NP_Config.domain + "/admin/theme/update"
+                , type: 'post'
+                , data: {
+                    "confStr": JSON.stringify(reqObj)
+                }
+                , done: function (resp) {
+                    layer.msg(resp.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        for (var i = 1; i <= 4; i++) {
+            var _id = "#card0" + String(i) + "-logo";
+            initUploadCard(upload, _id);
+        }
+
+
+        $(function () {
+            admin.req({
+                url: NP_Config.domain + "/global/conf"
+                , done: function (resp) {
+                    var _data = JSON.parse(resp.data.def_theme_conf);
+                    _data = _data.wel_card;
+                    if (_data && _data.length > 0) {
+                        for (var i = 0; i < _data.length; i++) {
+                            form.val(_data[i].cardNo, {
+                                "show": _data[i].show,
+                                "url": _data[i].url,
+                                "headerHtml": _data[i].headerHtml,
+                                "logoImgSrc": _data[i].logoImgSrc,
+                                "shape": _data[i].shape,
+                                "cardTitle": _data[i].cardTitle,
+                                "cardDesc": _data[i].cardDesc,
+                                "itemTexts": _data[i].itemTexts,
+                                "footerText": _data[i].footerText
+                            });
+
+                            $("#" + _data[i].cardNo + "-logo").find("img").attr("src", _data[i].logoImgSrc);
+                        }
+                    }
+                }
+            });
+        })
+
+    });
+
+    function initUploadCard(layuiUpload, id) {
+        layuiUpload.render({
+            elem: id //绑定元素
+            , url: NP_Config.domain + '/admin/upload/'
+            , field: 'notepressFile'
+            , data: {
+                reqType: 'lay',
+                code: 11
+            }
+            , headers: {
+                access_token: layui.data(NP_Config.tableName)[NP_Config.request.tokenName]
+            }
+            , done: function (res) {
+                if (res.code === NotePress.Constant.CODE_SUCCESS && res.data.code === 0) {
+                    var _imgSrc = NP_Config.domain + res.data.data.src;
+                    $(id).find("img").attr("src", _imgSrc);
+                    $(id).prev("input[name=logoImgSrc]").val(_imgSrc);
+                    layer.msg(res.msg || res.message);
+                } else {
+                    layer.msg(res.message || res.data.msg)
+                }
+            }
+            , error: function () {
+                layer.msg("上传失败！");
+            }
+        });
+
+    }
+</script>
