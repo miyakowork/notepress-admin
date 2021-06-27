@@ -137,6 +137,15 @@
                             </div>
                         </div>
 
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否开启GITEE登录
+                                <b><i class="layui-icon layui-icon-about" lay-tips="开启gitee登录时必须设置好相关gitee登录的参数哦，此处仅仅作为功能开关"></i></b>
+                            </label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="switch_gitee_login" lay-skin="switch" lay-text="开启|关闭" lay-filter="switchFilter">
+                            </div>
+                        </div>
+
                         <div class="layui-form-item" id="recharge">
                             <label class="layui-form-label">是否开启自动充值服务
                                 <b><i class="layui-icon layui-icon-about" lay-tips="开启则启用自动充值功能，关闭则使用扫码手动确认！<br/>服务端jar包需要额外购买，详情咨询QQ:765934806<br/>注：必须要启动充值微服务端才有效哦！"></i></b>
@@ -316,6 +325,7 @@
                     , "statistics_method[admin]": resp.data.statistics_method.indexOf('admin') > -1 || false
                     , "switch_qq_login": resp.data.switch_qq_login === "1" || false
                     , "switch_github_login": resp.data.switch_github_login === "1" || false
+                    , "switch_gitee_login": resp.data.switch_gitee_login === "1" || false
                     , "switch_recharge_server": resp.data.switch_recharge_server === "1" || false
                     , "switch_homepage_index": resp.data.switch_homepage_index === "1" || false
                 })

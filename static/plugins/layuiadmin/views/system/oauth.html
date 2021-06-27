@@ -110,7 +110,7 @@
                             //监听提交
                             form.on('submit(LAY-oauth-front-submit)', function (data) {
                                 var field = data.field; //获取提交的字段
-
+                                field.extraParam = field.extraParam === "" ? "{}" : field.extraParam;
                                 admin.req({
                                     url: NP_Config.domain + "/admin/oauth/add"
                                     , type: "post"
@@ -152,6 +152,7 @@
                             //监听提交
                             form.on('submit(LAY-oauth-front-submit)', function (data) {
                                 var field = data.field; //获取提交的字段
+                                field.extraParam = field.extraParam === "" ? "{}" : field.extraParam;
 
                                 admin.req({
                                     url: NP_Config.domain + "/admin/oauth/update"
